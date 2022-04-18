@@ -1,4 +1,3 @@
-import { clearInterval } from "timers";
 import { State } from "./components/Store";
 
 
