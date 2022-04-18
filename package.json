@@ -1,0 +1,30 @@
+{
+  "name": "rux-rolli",
+  "version": "0.1.0",
+  "scripts": {
+    "build:App": "browserify src/App.tsx -p [ tsify --jsx=react-jsx ] -t [ babelify --extensions '.ts,.tsx,.js,.jsx' --presets [ @babel/preset-env @babel/preset-react @babel/preset-typescript ] ] -g [ envify --NODE_ENV development ] > dist/App.js",
+    "typecheck:App": "tsc --jsx react-jsx src/**.tsx",
+    "clean:App": "rm -rf src/*.js src/components/*.js dist/*.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/node": "^17.0.23",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "babelify": "^10.0.0",
+    "browserify": "^16.3.0",
+    "envify": "^4.1.0",
+    "terser": "^4.1.2",
+    "tsify": "^5.0.4",
+    "typescript": "^4.5.5",
+    "uglify-js": "^3.6.0",
+    "uglifyify": "^5.0.1"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
