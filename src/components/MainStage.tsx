@@ -3,7 +3,6 @@ import * as React from "react";
 import { StoreContext, State } from "./Store";
 import { ActionButton } from "./ActionButton";
 import { Editor } from "./Editor";
-import { editAction, doneEditingAction, runAction, stopAction, stepAction, resetAction } from "../actions";
 
 export function MainStage(props: any) {
   const [state, setState] = React.useContext(StoreContext);
@@ -16,12 +15,12 @@ export function MainStage(props: any) {
   return (
     <div>
       <div>
-        <ActionButton action={editAction} label="Edit" />
-        <ActionButton action={doneEditingAction} label="Done" />
-        <ActionButton action={stepAction} label="Step" />
-        <ActionButton action={runAction} label="Run" />
-        <ActionButton action={stopAction} label="Stop" />
-        <ActionButton action={resetAction} label="Reset" />
+        <ActionButton action={props.actions.edit} label="Edit" />
+        <ActionButton action={props.actions.doneEditing} label="Done" />
+        <ActionButton action={props.actions.step} label="Step" />
+        <ActionButton action={props.actions.run} label="Run" />
+        <ActionButton action={props.actions.stop} label="Stop" />
+        <ActionButton action={props.actions.reset} label="Reset" />
       </div>
       <div>
         {state.status === 'Editing' ?

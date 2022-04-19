@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { StoreContext, State } from "./Store";
-import { Action, enact } from "../actions";
+import { Action } from "../actions";
 
 interface ActionButtonProps {
   action: Action;
@@ -10,7 +10,7 @@ interface ActionButtonProps {
 
 export function makeClickHandler(action: Action, state: State, setState: any) {
   return function(e: any) {
-    enact(action, state, setState);
+    action.enact(state, setState);
   };
 }
 

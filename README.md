@@ -25,11 +25,43 @@ could one day be built).
 
 ### Architectural Features
 
-*   written in TypeScript, builds with browserify using tsify
-*   driven by "exploded actions", each of which defines its own
-    preconditions, state transformation, and side effects
-*   (coming) a component to display self-describing data in an
-    appropriate visual breakdown
+Rux Rolli is written in TypeScript.  The included build command
+translates it to JavaScript using browserify and [tsify][].
+
+A notable architectural feature is the class hierarchy of
+`Action` objects.  Each of these objects is self-describing
+in the sense that it defines its own preconditions, state
+transformation, and side effects, and these can be accessed
+independently by other objects.  So, for example, the
+`ActionButton` component can consult the precondition to
+determine whether the UI button is disabled or enabled.
+Further, the preconditions could (in theory) be used to
+construct a state machine diagram showing the allowable
+transitions from state to state.
+
+An esolang (or other computational animation) is defined by
+a number of pure functions, which the `Action` objects apply
+as part of their state transformation.  These functions
+include:
+
+*   `load`: transform the program text into the initial
+    configuration
+*   `step`: given a configuration, return the configuration
+    that immediately follows it, or `null` if there is none
+
+(possibly others too, but those are the main ones.)
+
+Also notable (but not yet implemented) is the fact that the
+configuration is also a self-describing data structure.  It
+may consist of playfields, stacks, queues, tapes, and so
+forth.  Each of these is represented as a JavaScript object,
+one field of which names the type of data that it contains.
+Other types may indicate that the object is merely a container
+of other objects.  So for example, a configuration may
+contain a playfield and a stack.  There shall be a React
+component which takes any such self-describing data structure
+and displays it sensibly in the DOM (knock on wood).
 
 [yoob]: https://catseye.tc/node/yoob
 [yoob.js]: https://catseye.tc/node/yoob.js
+[tsify]: https://github.com/TypeStrong/tsify
