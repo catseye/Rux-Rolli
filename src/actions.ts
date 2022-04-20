@@ -8,12 +8,14 @@ export interface Action {
   enact: (state: State, setState: any) => void;
 }
 
+type LoadFunction = (programText: string) => any;
+type NextFunction = (configuration: any) => any;
 
 class BaseAction {
   enact(state: State, setState: any): void {
     if (this.isPossible(state)) {
       this.effect(state, setState);
-      setState(this.transformer);
+      setState(this.transformer.bind(this));
     }
   }
 
@@ -43,6 +45,13 @@ export class EditAction extends BaseAction {
 }
 
 export class DoneEditingAction extends BaseAction {
+  load: LoadFunction;
+
+  constructor(load: LoadFunction) {
+    super();
+    this.load = load;
+  }
+
   isPossible(state: State): boolean {
     return state.status === 'Editing';
   }
@@ -50,13 +59,20 @@ export class DoneEditingAction extends BaseAction {
   transformer(state: State): State {
     return {
       ...state,
-      playfield: state.initial,
+      playfield: this.load(state.initial),
       status: 'Stopped'
     }
   }
 }
 
 export class RunAction extends BaseAction {
+  next: NextFunction;
+
+  constructor(next: NextFunction) {
+    super();
+    this.next = next;
+  }
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -70,12 +86,12 @@ export class RunAction extends BaseAction {
 
   effect(state: State, setState: any): void {
     const intervalId = setTimeout(() => {
-      new StepAction().enact(state, setState);
+      new StepAction(this.next).enact(state, setState);
       setState((state: State) => ({
         ...state,
         intervalId: null
       }));
-      new RunAction().effect(state, setState);
+      new RunAction(this.next).effect(state, setState);
     }, 250);
     setState((state: State) => ({
       ...state,
@@ -109,6 +125,13 @@ export class StopAction extends BaseAction {
 }
 
 export class StepAction extends BaseAction {
+  next: NextFunction;
+
+  constructor(next: NextFunction) {
+    super();
+    this.next = next;
+  }
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -116,7 +139,7 @@ export class StepAction extends BaseAction {
   transformer(state: State): State {
     return {
       ...state,
-      playfield: state.playfield + 'A'
+      playfield: this.next(state.playfield)
     }
   }
 }
@@ -132,4 +155,17 @@ export class ResetAction extends BaseAction {
       playfield: state.initial
     }
   }
+}
+
+// ------------------------------------------
+
+export function createActionsFrom(load: LoadFunction, next: NextFunction) {
+  return {
+    edit: new EditAction(),
+    doneEditing: new DoneEditingAction(load),
+    run: new RunAction(next),
+    stop: new StopAction(),
+    step: new StepAction(next),
+    reset: new ResetAction()
+  };
 }
