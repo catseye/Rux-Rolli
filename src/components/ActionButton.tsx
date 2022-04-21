@@ -3,12 +3,15 @@ import * as React from "react";
 import { StoreContext, State } from "./Store";
 import { Action } from "../actions";
 
+// more strict than the one defined in Store
+type SetStateType = (fun:(s: State) => State) => void;
+
 interface ActionButtonProps {
   action: Action;
   label: string;
 }
 
-export function makeClickHandler(action: Action, state: State, setState: any) {
+export function makeClickHandler(action: Action, state: State, setState: SetStateType) {
   return function(e: any) {
     action.enact(state, setState);
   };

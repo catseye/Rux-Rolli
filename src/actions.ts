@@ -1,18 +1,20 @@
 import { State, Configuration } from "./components/Store";
 
+// more strict than the one defined in Store
+type SetStateType = (fun:(s: State) => State) => void;
 
 export interface Action {
   isPossible: (state: State) => boolean;
   transformer: (state: State) => State;
-  effect?: (state: State, setState: any) => void;
-  enact: (state: State, setState: any) => void;
+  effect?: (state: State, setState: SetStateType) => void;
+  enact: (state: State, setState: SetStateType) => void;
 }
 
 type LoadFunction = (programText: string) => Configuration;
 type NextFunction = (configuration: Configuration) => Configuration;
 
 class BaseAction {
-  enact(state: State, setState: any): void {
+  enact(state: State, setState: SetStateType): void {
     if (this.isPossible(state)) {
       this.effect(state, setState);
       setState(this.transformer.bind(this));
@@ -27,7 +29,7 @@ class BaseAction {
     return state;
   }
 
-  effect(state: State, setState: any): void {
+  effect(state: State, setState: SetStateType): void {
   }
 }
 
@@ -84,7 +86,7 @@ export class RunAction extends BaseAction {
     }
   }
 
-  effect(state: State, setState: any): void {
+  effect(state: State, setState: SetStateType): void {
     const intervalId = setTimeout(() => {
       new StepAction(this.next).enact(state, setState);
       setState((state: State) => ({
@@ -113,7 +115,7 @@ export class StopAction extends BaseAction {
     }
   }
 
-  effect(state: State, setState: any): void {
+  effect(state: State, setState: SetStateType): void {
     if (state.intervalId) {
       clearTimeout(state.intervalId);
     }
