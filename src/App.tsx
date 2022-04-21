@@ -5,8 +5,10 @@ import { StoreContext, State, Configuration } from "./components/Store";
 import { createActionsFrom } from "./actions";
 import { MainStage } from "./components/MainStage";
 
+interface AppProps {
+}
 
-function App(props: any) {
+function App(props: AppProps) {
 
   const load = function(programText: string): Configuration {
     return {

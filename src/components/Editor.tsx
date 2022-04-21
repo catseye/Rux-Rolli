@@ -1,8 +1,10 @@
 import * as React from "react";
 
+import { ChangeEventHandler } from "react";
+
 interface EditorProps {
   programText: string;
-  onChange: any;
+  onChange: ChangeEventHandler<HTMLTextAreaElement>;
 }
 
 export function Editor(props: EditorProps) {

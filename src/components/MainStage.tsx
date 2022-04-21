@@ -1,16 +1,22 @@
 import * as React from "react";
 
+import { ChangeEvent } from "react";
+
 import { StoreContext, State } from "./Store";
 import { ActionButton } from "./ActionButton";
 import { Editor } from "./Editor";
 import { Display } from "./Display";
 
-export function MainStage(props: any) {
+interface MainStageProps {
+  actions: any;
+}
+
+export function MainStage(props: MainStageProps) {
   const [state, setState] = React.useContext(StoreContext);
-  const onEditorChange = function(event: any) {
+  const onEditorChange = function(ev: ChangeEvent<HTMLTextAreaElement>) {
     setState((state: State) => ({
       ...state,
-      initial: event.target.value
+      initial: ev.target.value
     }));
   };
   return (

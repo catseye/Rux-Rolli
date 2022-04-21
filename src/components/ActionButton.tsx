@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { MouseEvent } from "react";
+
 import { StoreContext, State } from "./Store";
 import { Action } from "../actions";
 
@@ -12,7 +14,7 @@ interface ActionButtonProps {
 }
 
 export function makeClickHandler(action: Action, state: State, setState: SetStateType) {
-  return function(e: any) {
+  return function(e: MouseEvent) {
     action.enact(state, setState);
   };
 }
