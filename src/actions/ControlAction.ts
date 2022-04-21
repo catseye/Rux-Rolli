@@ -1,21 +1,18 @@
-import { State, Configuration, SetStateType } from "../components/Store";
-import { BaseAction, Action } from "./BaseAction";
+import { State, SetStateType } from "../components/Store";
+import { BaseAction } from "./BaseAction";
 import { LoadFunction, NextFunction } from "../semantics"
 
 
 class ControlAction extends BaseAction {
-  isPossible(state: State): boolean {
-    return state.status === 'Stopped';
-  }
+  load: LoadFunction;
+  next: NextFunction;
 
-  transformer(state: State): State {
-    return {
-      ...state,
-      status: 'Editing'
-    }
+  constructor(load: LoadFunction, next: NextFunction) {
+    super();
+    this.load = load;
+    this.next = next;
   }
 }
-
 
 export class EditAction extends ControlAction {
   isPossible(state: State): boolean {
@@ -31,13 +28,6 @@ export class EditAction extends ControlAction {
 }
 
 export class DoneEditingAction extends ControlAction {
-  load: LoadFunction;
-
-  constructor(load: LoadFunction) {
-    super();
-    this.load = load;
-  }
-
   isPossible(state: State): boolean {
     return state.status === 'Editing';
   }
@@ -52,13 +42,6 @@ export class DoneEditingAction extends ControlAction {
 }
 
 export class RunAction extends ControlAction {
-  next: NextFunction;
-
-  constructor(next: NextFunction) {
-    super();
-    this.next = next;
-  }
-
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -72,12 +55,12 @@ export class RunAction extends ControlAction {
 
   effect(state: State, setState: SetStateType): void {
     const intervalId = setTimeout(() => {
-      new StepAction(this.next).enact(state, setState);
+      new StepAction(this.load, this.next).enact(state, setState);
       setState((state: State) => ({
         ...state,
         intervalId: null
       }));
-      new RunAction(this.next).effect(state, setState);
+      new RunAction(this.load, this.next).effect(state, setState);
     }, 250);
     setState((state: State) => ({
       ...state,
@@ -111,13 +94,6 @@ export class StopAction extends ControlAction {
 }
 
 export class StepAction extends ControlAction {
-  next: NextFunction;
-
-  constructor(next: NextFunction) {
-    super();
-    this.next = next;
-  }
-
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -131,13 +107,6 @@ export class StepAction extends ControlAction {
 }
 
 export class ResetAction extends ControlAction {
-  load: LoadFunction;
-
-  constructor(load: LoadFunction) {
-    super();
-    this.load = load;
-  }
-
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -152,13 +121,13 @@ export class ResetAction extends ControlAction {
 
 // ------------------------------------------
 
-export function createActionsFrom(load: LoadFunction, next: NextFunction) {
+export function createControlActionsFrom(load: LoadFunction, next: NextFunction) {
   return {
-    edit: new EditAction(),
-    doneEditing: new DoneEditingAction(load),
-    run: new RunAction(next),
-    stop: new StopAction(),
-    step: new StepAction(next),
-    reset: new ResetAction(load)
+    edit: new EditAction(load, next),
+    doneEditing: new DoneEditingAction(load, next),
+    run: new RunAction(load, next),
+    stop: new StopAction(load, next),
+    step: new StepAction(load, next),
+    reset: new ResetAction(load, next)
   };
 }

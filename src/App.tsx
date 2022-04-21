@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { StoreContext, State } from "./components/Store";
-import { createActionsFrom } from "./actions/ControlAction";
+import { createControlActionsFrom } from "./actions/ControlAction";
 import { Hencemuffin } from "./semantics";
 import { MainStage } from "./components/MainStage";
 
@@ -10,7 +10,7 @@ interface AppProps {
 }
 
 function App(props: AppProps) {
-  const actions = createActionsFrom(Hencemuffin.load, Hencemuffin.next);
+  const actions = createControlActionsFrom(Hencemuffin.load, Hencemuffin.next);
 
   const initialState: State = {
     status: 'Stopped',
