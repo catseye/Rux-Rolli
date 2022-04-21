@@ -1,7 +1,9 @@
 import * as React from "react";
 
+import { Configuration } from "./Store";
+
 interface DisplayProps {
-  configuration: any;
+  configuration: Configuration;
 }
 
 export function Display(props: DisplayProps) {

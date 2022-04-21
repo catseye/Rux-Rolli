@@ -1,4 +1,4 @@
-import { State } from "./components/Store";
+import { State, Configuration } from "./components/Store";
 
 
 export interface Action {
@@ -8,8 +8,8 @@ export interface Action {
   enact: (state: State, setState: any) => void;
 }
 
-type LoadFunction = (programText: string) => any;
-type NextFunction = (configuration: any) => any;
+type LoadFunction = (programText: string) => Configuration;
+type NextFunction = (configuration: Configuration) => Configuration;
 
 class BaseAction {
   enact(state: State, setState: any): void {

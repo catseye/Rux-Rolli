@@ -1,9 +1,14 @@
 import * as React from "react";
 
+export interface Configuration {
+  type: 'text' | 'playfield' | 'stack';
+  contents: string;
+}
+
 export interface State {
   status: 'Editing' | 'Stopped' | 'Running';
   initial: string;
-  configuration: any;
+  configuration: Configuration | null;
   intervalId: number | null;
 }
 

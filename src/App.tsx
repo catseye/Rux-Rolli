@@ -1,20 +1,20 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { StoreContext, State } from "./components/Store";
+import { StoreContext, State, Configuration } from "./components/Store";
 import { createActionsFrom } from "./actions";
 import { MainStage } from "./components/MainStage";
 
 
 function App(props: any) {
 
-  const load = function(programText: string) {
+  const load = function(programText: string): Configuration {
     return {
       type: "text",
       contents: programText
     };
   }
-  const next = function(configuration: any) {
+  const next = function(configuration: Configuration): Configuration {
     return {
       type: "text",
       contents: configuration.contents + "A"
