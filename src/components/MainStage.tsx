@@ -3,6 +3,7 @@ import * as React from "react";
 import { StoreContext, State } from "./Store";
 import { ActionButton } from "./ActionButton";
 import { Editor } from "./Editor";
+import { Display } from "./Display";
 
 export function MainStage(props: any) {
   const [state, setState] = React.useContext(StoreContext);
@@ -11,6 +12,10 @@ export function MainStage(props: any) {
       ...state,
       initial: event.target.value
     }));
+  };
+  const configuration = {
+    type: "text",
+    contents: state.playfield
   };
   return (
     <div>
@@ -25,7 +30,7 @@ export function MainStage(props: any) {
       <div>
         {state.status === 'Editing' ?
           <Editor onChange={onEditorChange} playfield={ state.initial } /> :
-          <pre>{ state.playfield}</pre>
+          <Display configuration={configuration} />
         }
         <p>{ state.status }</p>
       </div>
