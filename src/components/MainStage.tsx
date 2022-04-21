@@ -2,7 +2,9 @@ import * as React from "react";
 
 import { ChangeEvent } from "react";
 
-import { StoreContext, State } from "./Store";
+import { State } from "../state";
+
+import { StoreContext } from "./Store";
 import { ActionButton } from "./ActionButton";
 import { Editor } from "./Editor";
 import { Display } from "./Display";

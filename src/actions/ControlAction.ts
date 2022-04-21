@@ -1,4 +1,5 @@
-import { State, SetStateType } from "../components/Store";
+import { State, SetStateType } from "../state";
+
 import { BaseAction } from "./BaseAction";
 import { LoadFunction, NextFunction } from "../semantics"
 

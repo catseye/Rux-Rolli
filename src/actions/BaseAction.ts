@@ -1,4 +1,4 @@
-import { State, Configuration, SetStateType } from "../components/Store";
+import { State, SetStateType } from "../state";
 
 export interface Action {
   isPossible: (state: State) => boolean;
