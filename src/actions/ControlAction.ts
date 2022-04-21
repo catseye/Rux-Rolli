@@ -1,34 +1,9 @@
-import { State, Configuration, SetStateType } from "./components/Store";
-import { LoadFunction, NextFunction } from "./semantics"
+import { State, Configuration, SetStateType } from "../components/Store";
+import { BaseAction, Action } from "./BaseAction";
+import { LoadFunction, NextFunction } from "../semantics"
 
-export interface Action {
-  isPossible: (state: State) => boolean;
-  transformer: (state: State) => State;
-  effect?: (state: State, setState: SetStateType) => void;
-  enact: (state: State, setState: SetStateType) => void;
-}
 
-class BaseAction {
-  enact(state: State, setState: SetStateType): void {
-    if (this.isPossible(state)) {
-      this.effect(state, setState);
-      setState(this.transformer.bind(this));
-    }
-  }
-
-  isPossible(state: State): boolean {
-    return false;
-  }
-
-  transformer(state: State): State {
-    return state;
-  }
-
-  effect(state: State, setState: SetStateType): void {
-  }
-}
-
-export class EditAction extends BaseAction {
+class ControlAction extends BaseAction {
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -41,7 +16,21 @@ export class EditAction extends BaseAction {
   }
 }
 
-export class DoneEditingAction extends BaseAction {
+
+export class EditAction extends ControlAction {
+  isPossible(state: State): boolean {
+    return state.status === 'Stopped';
+  }
+
+  transformer(state: State): State {
+    return {
+      ...state,
+      status: 'Editing'
+    }
+  }
+}
+
+export class DoneEditingAction extends ControlAction {
   load: LoadFunction;
 
   constructor(load: LoadFunction) {
@@ -62,7 +51,7 @@ export class DoneEditingAction extends BaseAction {
   }
 }
 
-export class RunAction extends BaseAction {
+export class RunAction extends ControlAction {
   next: NextFunction;
 
   constructor(next: NextFunction) {
@@ -98,7 +87,7 @@ export class RunAction extends BaseAction {
 
 }
 
-export class StopAction extends BaseAction {
+export class StopAction extends ControlAction {
   isPossible(state: State): boolean {
     return state.status === 'Running';
   }
@@ -121,7 +110,7 @@ export class StopAction extends BaseAction {
   }
 }
 
-export class StepAction extends BaseAction {
+export class StepAction extends ControlAction {
   next: NextFunction;
 
   constructor(next: NextFunction) {
@@ -141,7 +130,7 @@ export class StepAction extends BaseAction {
   }
 }
 
-export class ResetAction extends BaseAction {
+export class ResetAction extends ControlAction {
   load: LoadFunction;
 
   constructor(load: LoadFunction) {

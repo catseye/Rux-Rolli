@@ -3,7 +3,7 @@ import * as React from "react";
 import { MouseEvent } from "react";
 
 import { StoreContext, State, SetStateType } from "./Store";
-import { Action } from "../actions";
+import { Action } from "../actions/BaseAction";
 
 interface ActionButtonProps {
   action: Action;
