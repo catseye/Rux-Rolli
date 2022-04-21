@@ -4,7 +4,7 @@ import * as ReactDOM from "react-dom";
 import { State } from "./state";
 import { StoreContext } from "./components/Store";
 import { createControlActionsFrom } from "./actions/ControlAction";
-import { Hencemuffin } from "./semantics";
+import { Hencemuffin } from "./semantics/Hencemuffin";
 import { MainStage } from "./components/MainStage";
 
 interface AppProps {
