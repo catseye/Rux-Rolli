@@ -7,21 +7,28 @@ import { MainStage } from "./components/MainStage";
 
 
 function App(props: any) {
+
+  const load = function(programText: string) {
+    return {
+      type: "text",
+      contents: programText
+    };
+  }
+  const next = function(configuration: any) {
+    return {
+      type: "text",
+      contents: configuration.contents + "A"
+    };
+  }
+  const actions = createActionsFrom(load, next);
+
   const initialState: State = {
     status: 'Stopped',
     initial: 'THUSNESS',
-    playfield: 'THUSNESS',
+    configuration: load('THUSNESS'),
     intervalId: null
   };
   const [state, stateSetState] = React.useState<State>(initialState);
-
-  const load = function(programText: string) {
-    return programText;
-  }
-  const next = function(configuration: any) {
-    return configuration + "A";
-  }
-  const actions = createActionsFrom(load, next);
 
   return (
     <StoreContext.Provider value={[state, stateSetState]}>

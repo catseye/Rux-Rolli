@@ -13,10 +13,6 @@ export function MainStage(props: any) {
       initial: event.target.value
     }));
   };
-  const configuration = {
-    type: "text",
-    contents: state.playfield
-  };
   return (
     <div>
       <div>
@@ -29,8 +25,8 @@ export function MainStage(props: any) {
       </div>
       <div>
         {state.status === 'Editing' ?
-          <Editor onChange={onEditorChange} playfield={ state.initial } /> :
-          <Display configuration={configuration} />
+          <Editor onChange={onEditorChange} programText={ state.initial } /> :
+          <Display configuration={ state.configuration } />
         }
         <p>{ state.status }</p>
       </div>

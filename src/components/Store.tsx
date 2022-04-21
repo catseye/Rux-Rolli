@@ -3,7 +3,7 @@ import * as React from "react";
 export interface State {
   status: 'Editing' | 'Stopped' | 'Running';
   initial: string;
-  playfield: string;
+  configuration: any;
   intervalId: number | null;
 }
 

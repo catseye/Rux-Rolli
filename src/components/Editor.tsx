@@ -1,14 +1,14 @@
 import * as React from "react";
 
 interface EditorProps {
-  playfield: string;
+  programText: string;
   onChange: any;
 }
 
 export function Editor(props: EditorProps) {
   return (
     <div>
-      <textarea onChange={props.onChange} value={ props.playfield }/>
+      <textarea onChange={props.onChange} value={ props.programText }/>
     </div>
   );
 }

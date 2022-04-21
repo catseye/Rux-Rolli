@@ -59,7 +59,7 @@ export class DoneEditingAction extends BaseAction {
   transformer(state: State): State {
     return {
       ...state,
-      playfield: this.load(state.initial),
+      configuration: this.load(state.initial),
       status: 'Stopped'
     }
   }
@@ -139,12 +139,19 @@ export class StepAction extends BaseAction {
   transformer(state: State): State {
     return {
       ...state,
-      playfield: this.next(state.playfield)
+      configuration: this.next(state.configuration)
     }
   }
 }
 
 export class ResetAction extends BaseAction {
+  load: LoadFunction;
+
+  constructor(load: LoadFunction) {
+    super();
+    this.load = load;
+  }
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -152,7 +159,7 @@ export class ResetAction extends BaseAction {
   transformer(state: State): State {
     return {
       ...state,
-      playfield: state.initial
+      configuration: this.load(state.initial)
     }
   }
 }
@@ -166,6 +173,6 @@ export function createActionsFrom(load: LoadFunction, next: NextFunction) {
     run: new RunAction(next),
     stop: new StopAction(),
     step: new StepAction(next),
-    reset: new ResetAction()
+    reset: new ResetAction(load)
   };
 }
