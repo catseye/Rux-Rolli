@@ -1,4 +1,4 @@
-import { Configuration } from "./state";
+import { Configuration } from "./configurations/Configuration";
 
 export type LoadFunction = (programText: string) => Configuration;
 export type NextFunction = (configuration: Configuration) => Configuration;

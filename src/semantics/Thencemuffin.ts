@@ -1,4 +1,6 @@
-import { Configuration, Text, Stack, Composite } from "../state";
+import { Configuration, Composite } from "../configurations/Configuration";
+import { Text } from "../configurations/Text";
+import { Stack, push } from "../configurations/Stack";
 import { Semantics } from "../semantics";
 
 /*
@@ -26,10 +28,10 @@ export const Thencemuffin: Semantics = {
         configuration.contents[1].type === 'stack') {
       const text: Text = configuration.contents[0];
       const stack: Stack = configuration.contents[1];
-      // TODO transform stack somehow
+      let stack2 = push(stack, "A");
       const composite: Composite = {
         type: "composite",
-        contents: [text, stack]
+        contents: [text, stack2]
       };
       return composite;
     }

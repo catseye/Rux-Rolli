@@ -1,24 +1,4 @@
-export interface Text {
-  type: 'text';
-  contents: string;
-}
-
-export interface Playfield {
-  type: 'playfield';
-  contents: Array<Array<string>>;
-}
-
-export interface Stack {
-  type: 'stack';
-  contents: Array<string>;
-}
-
-export interface Composite {
-  type: 'composite';
-  contents: Array<Configuration>;
-}
-
-export type Configuration = Text | Playfield | Stack | Composite;
+import { Configuration } from "./configurations/Configuration";
 
 export interface State {
   status: 'Editing' | 'Stopped' | 'Running';

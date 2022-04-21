@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Configuration } from "../state";
+import { Configuration } from "../configurations/Configuration";
 
 interface DisplayProps {
   configuration: Configuration;
