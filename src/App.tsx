@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { StoreContext, State, Configuration } from "./components/Store";
+import { StoreContext, State } from "./components/Store";
 import { createActionsFrom } from "./actions";
 import { Hencemuffin } from "./semantics";
 import { MainStage } from "./components/MainStage";

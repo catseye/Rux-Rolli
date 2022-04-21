@@ -1,8 +1,5 @@
-import { State, Configuration } from "./components/Store";
+import { State, Configuration, SetStateType } from "./components/Store";
 import { LoadFunction, NextFunction } from "./semantics"
-
-// more strict than the one defined in Store
-type SetStateType = (fun:(s: State) => State) => void;
 
 export interface Action {
   isPossible: (state: State) => boolean;

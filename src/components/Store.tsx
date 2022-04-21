@@ -15,5 +15,7 @@ export interface State {
 }
 
 export type SetStateType = Dispatch<SetStateAction<State>>;
+// If we wanted a less React-specific type we could say:
+// export type SetStateType = (fun:(s: State) => State) => void;
 
 export const StoreContext = React.createContext<[State, SetStateType]>(null);

@@ -2,11 +2,8 @@ import * as React from "react";
 
 import { MouseEvent } from "react";
 
-import { StoreContext, State } from "./Store";
+import { StoreContext, State, SetStateType } from "./Store";
 import { Action } from "../actions";
-
-// more strict than the one defined in Store
-type SetStateType = (fun:(s: State) => State) => void;
 
 interface ActionButtonProps {
   action: Action;
