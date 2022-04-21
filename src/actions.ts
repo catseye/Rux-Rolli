@@ -1,4 +1,5 @@
 import { State, Configuration } from "./components/Store";
+import { LoadFunction, NextFunction } from "./semantics"
 
 // more strict than the one defined in Store
 type SetStateType = (fun:(s: State) => State) => void;
@@ -9,9 +10,6 @@ export interface Action {
   effect?: (state: State, setState: SetStateType) => void;
   enact: (state: State, setState: SetStateType) => void;
 }
-
-type LoadFunction = (programText: string) => Configuration;
-type NextFunction = (configuration: Configuration) => Configuration;
 
 class BaseAction {
   enact(state: State, setState: SetStateType): void {

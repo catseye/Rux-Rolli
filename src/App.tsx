@@ -3,31 +3,19 @@ import * as ReactDOM from "react-dom";
 
 import { StoreContext, State, Configuration } from "./components/Store";
 import { createActionsFrom } from "./actions";
+import { Hencemuffin } from "./semantics";
 import { MainStage } from "./components/MainStage";
 
 interface AppProps {
 }
 
 function App(props: AppProps) {
-
-  const load = function(programText: string): Configuration {
-    return {
-      type: "text",
-      contents: programText
-    };
-  }
-  const next = function(configuration: Configuration): Configuration {
-    return {
-      type: "text",
-      contents: configuration.contents + "A"
-    };
-  }
-  const actions = createActionsFrom(load, next);
+  const actions = createActionsFrom(Hencemuffin.load, Hencemuffin.next);
 
   const initialState: State = {
     status: 'Stopped',
     initial: 'THUSNESS',
-    configuration: load('THUSNESS'),
+    configuration: Hencemuffin.load('THUSNESS'),
     intervalId: null
   };
   const [state, stateSetState] = React.useState<State>(initialState);
