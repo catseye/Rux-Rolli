@@ -1,7 +1,7 @@
 import { State, SetStateType } from "../state";
 
 import { BaseAction } from "./BaseAction";
-import { LoadFunction, NextFunction } from "../semantics"
+import { Semantics, LoadFunction, NextFunction } from "../semantics"
 
 
 class ControlAction extends BaseAction {
@@ -122,7 +122,9 @@ export class ResetAction extends ControlAction {
 
 // ------------------------------------------
 
-export function createControlActionsFrom(load: LoadFunction, next: NextFunction) {
+export function createControlActionsFromSemantics(semantics: Semantics) {
+  const load = semantics.load;
+  const next = semantics.next;
   return {
     edit: new EditAction(load, next),
     doneEditing: new DoneEditingAction(load, next),
