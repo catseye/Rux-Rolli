@@ -4,6 +4,7 @@ import * as ReactDOM from "react-dom";
 import { State } from "./state";
 import { StoreContext } from "./components/Store";
 import { createControlActionsFromSemantics } from "./actions/ControlAction";
+import { Semantics } from "./semantics";
 import { Hencemuffin } from "./semantics/Hencemuffin";
 import { Thencemuffin } from "./semantics/Thencemuffin";
 import { MainStage } from "./components/MainStage";
@@ -13,20 +14,19 @@ const allSemantics = {
   Thencemuffin: Thencemuffin
 };
 
-interface AppProps {
+interface SemanticsContainerProps {
+  semantics: Semantics;
 }
 
-function App(props: AppProps) {
-  const semantics = allSemantics["Hencemuffin"];
-
-  const actions = createControlActionsFromSemantics(semantics);
+function SemanticsContainer(props: SemanticsContainerProps) {
+  const actions = createControlActionsFromSemantics(props.semantics);
 
   const programText = 'THUSNESS';
 
   const initialState: State = {
     status: 'Stopped',
     initial: programText,
-    configuration: semantics.load(programText),
+    configuration: props.semantics.load(programText),
     intervalId: null
   };
   const [state, stateSetState] = React.useState<State>(initialState);
@@ -38,6 +38,14 @@ function App(props: AppProps) {
   );
 }
 
+function App(props: any) {
+  return (
+    <div>
+      <SemanticsContainer semantics={allSemantics.Hencemuffin} />
+      <SemanticsContainer semantics={allSemantics.Thencemuffin} />
+    </div>
+  )
+}
 // ========================================
   
 ReactDOM.render(<App />, document.getElementById("root"));
