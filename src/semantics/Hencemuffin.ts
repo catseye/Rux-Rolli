@@ -7,13 +7,15 @@ export const Hencemuffin: Semantics = {
   load: function(programText) {
     return {
       type: "text",
-      contents: programText
+      contents: programText,
+      cursors: []
     };
   },
   next: function(configuration) {
     return {
       type: "text",
-      contents: configuration.contents + "A"
+      contents: configuration.contents + "A",
+      cursors: []
     };
   }
 }

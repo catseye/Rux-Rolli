@@ -11,6 +11,7 @@ export function Display(props: DisplayProps) {
     return (
       <div className="display-text">
         <pre>{ props.configuration.contents }</pre>
+        <div>{ props.configuration.cursors }</div>
       </div>
     );
   } else if (props.configuration.type === "stack") {
