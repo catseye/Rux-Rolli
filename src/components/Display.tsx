@@ -9,23 +9,27 @@ interface DisplayProps {
 export function Display(props: DisplayProps) {
   if (props.configuration.type === "text") {
     return (
-      <pre>{ props.configuration.contents }</pre>
+      <div className="display-text">
+        <pre>{ props.configuration.contents }</pre>
+      </div>
     );
   } else if (props.configuration.type === "stack") {
     return (
-      <pre>{ props.configuration.contents }</pre>
+      <div className="display-stack">
+        { props.configuration.contents.map((s) => <span>{s}</span>) }
+      </div>
     );
   } else if (props.configuration.type === "composite") {
     return (
-      <div>
+      <div className="display-composite">
         {props.configuration.contents.map((c) => <Display configuration={c} />)}
       </div>
     );
   } else {
     return (
-        <div>
-          <em>Invalid configuration type "{props.configuration.type}"</em>
-        </div>
+      <div>
+        <em>Invalid configuration type "{props.configuration.type}"</em>
+      </div>
     );
   }
 }

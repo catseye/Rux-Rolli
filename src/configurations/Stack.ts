@@ -14,10 +14,8 @@ export function pop(s: Stack): [Stack, string] {
   return [
     {
       type: 'stack',
-      contents: s.contents // FIXME
+      contents: s.contents.slice(0, -1)
     },
-    "foo"
+    s.contents[s.contents.length - 1]
   ];
 }
-
-// TODO: operations on stacks here
