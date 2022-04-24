@@ -37,7 +37,11 @@ independently by other objects.  So, for example, the
 determine whether the UI button is disabled or enabled.
 Further, the preconditions could (in theory) be used to
 construct a state machine diagram showing the allowable
-transitions from state to state.
+transitions from state to state.  Or confirm that it conforms
+to a given state machine.  Here is a diagram outlining the
+current state structure:
+
+![simple state machine diagram for Rux Rolli](images/state-machine-diagram-simple.png?raw=true)
 
 An esolang (or other computational animation) is defined by
 a number of pure functions, which the `Action` objects apply
