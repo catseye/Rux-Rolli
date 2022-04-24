@@ -29,6 +29,9 @@ export const Thencemuffin: Semantics = {
         configuration.contents[1].type === 'stack') {
       const text: Text = configuration.contents[0];
       let text2 = moveCursor(text, 0, 1);
+      if (text2.cursors[0] >= text2.contents.length) {
+        return null;
+      }
       let char = text2.contents.charAt(text2.cursors[0]);
       const stack: Stack = configuration.contents[1];
       let stack2: Stack, elem: string;

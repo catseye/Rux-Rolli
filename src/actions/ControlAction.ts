@@ -17,7 +17,7 @@ class ControlAction extends BaseAction {
 
 export class EditAction extends ControlAction {
   isPossible(state: State): boolean {
-    return state.status === 'Stopped';
+    return state.status === 'Stopped' || state.status === 'Terminated';
   }
 
   transformer(state: State): State {
@@ -56,6 +56,7 @@ export class RunAction extends ControlAction {
 
   effect(state: State, setState: SetStateType): void {
     const intervalId = setTimeout(() => {
+      // FIXME
       new StepAction(this.load, this.next).enact(state, setState);
       setState((state: State) => ({
         ...state,
@@ -100,21 +101,25 @@ export class StepAction extends ControlAction {
   }
 
   transformer(state: State): State {
+    const configuration = this.next(state.configuration);
+    const status = configuration === null ? 'Terminated' : state.status;
     return {
       ...state,
-      configuration: this.next(state.configuration)
+      status: status,
+      configuration: configuration
     }
   }
 }
 
 export class ResetAction extends ControlAction {
   isPossible(state: State): boolean {
-    return state.status === 'Stopped';
+    return state.status === 'Stopped' || state.status === 'Terminated';
   }
 
   transformer(state: State): State {
     return {
       ...state,
+      status: 'Stopped',
       configuration: this.load(state.initial)
     }
   }
