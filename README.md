@@ -41,7 +41,7 @@ transitions from state to state.  Or confirm that it conforms
 to a given state machine.  Here is a diagram outlining the
 current state structure:
 
-![simple state machine diagram for Rux Rolli](images/state-machine-diagram-simple.png?raw=true)
+![simple state machine diagram for Rux Rolli](images/state-machine-simple.png?raw=true)
 
 An esolang (or other computational animation) is defined by
 a number of pure functions, which the `Action` objects apply
