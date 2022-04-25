@@ -42,6 +42,28 @@ export class DoneEditingAction extends ControlAction {
   }
 }
 
+function performStep(state: State, next: NextFunction) {
+  // Used as the basis for both StepAction's transformer and RunAction's effect.
+  const configuration = next(state.configuration);
+  const status = configuration === null ? 'Terminated' : state.status;
+  return {
+    ...state,
+    status: status,
+    configuration: configuration,
+    intervalId: null
+  }
+}
+
+export class StepAction extends ControlAction {
+  isPossible(state: State): boolean {
+    return state.status === 'Stopped';
+  }
+
+  transformer(state: State): State {
+    return performStep(state, this.next);
+  }
+}
+
 export class RunAction extends ControlAction {
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
@@ -56,12 +78,7 @@ export class RunAction extends ControlAction {
 
   effect(state: State, setState: SetStateType): void {
     const intervalId = setTimeout(() => {
-      // FIXME
-      new StepAction(this.load, this.next).enact(state, setState);
-      setState((state: State) => ({
-        ...state,
-        intervalId: null
-      }));
+      setState((state: State) => performStep(state, this.next));
       new RunAction(this.load, this.next).effect(state, setState);
     }, 250);
     setState((state: State) => ({
@@ -92,22 +109,6 @@ export class StopAction extends ControlAction {
       ...state,
       intervalId: null
     }));
-  }
-}
-
-export class StepAction extends ControlAction {
-  isPossible(state: State): boolean {
-    return state.status === 'Stopped';
-  }
-
-  transformer(state: State): State {
-    const configuration = this.next(state.configuration);
-    const status = configuration === null ? 'Terminated' : state.status;
-    return {
-      ...state,
-      status: status,
-      configuration: configuration
-    }
   }
 }
 

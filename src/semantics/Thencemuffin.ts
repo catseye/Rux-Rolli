@@ -24,6 +24,7 @@ export const Thencemuffin: Semantics = {
     return composite;
   },
   next: function(configuration: Configuration): Configuration {
+    if (configuration === null) return null;
     if (configuration.type === 'composite' &&
         configuration.contents[0].type === 'text' &&
         configuration.contents[1].type === 'stack') {
