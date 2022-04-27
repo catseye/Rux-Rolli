@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createReducer } from "../actions/ControlAction";
+import { createReducer } from "../commands/ControlCommand";
 
 import { Configuration } from "../configurations/Configuration";
 import { State } from "../state";

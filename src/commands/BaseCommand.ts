@@ -1,14 +1,14 @@
 import { State } from "../state";
 import { DispatchType } from "../components/Store";
 
-export interface Action {
+export interface Command {
   name: string,
   isPossible: (state: State) => boolean;
   transformer: (state: State) => State;
   effect: (dispatch: DispatchType) => void;
 }
 
-export class BaseAction {
+export class BaseCommand {
   name: string;
 
   isPossible(state: State): boolean {

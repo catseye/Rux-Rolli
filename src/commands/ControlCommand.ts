@@ -1,11 +1,11 @@
 import { State } from "../state";
 
-import { BaseAction } from "./BaseAction";
+import { BaseCommand } from "./BaseCommand";
 import { Semantics, LoadFunction, NextFunction } from "../semantics"
 import { DispatchType, Action } from "../components/Store";
 
 
-class ControlAction extends BaseAction {
+class ControlCommand extends BaseCommand {
   load: LoadFunction;
   next: NextFunction;
 
@@ -16,7 +16,7 @@ class ControlAction extends BaseAction {
   }
 }
 
-export class EditAction extends ControlAction {
+export class EditCommand extends ControlCommand {
   name = "edit";
 
   isPossible(state: State): boolean {
@@ -31,7 +31,7 @@ export class EditAction extends ControlAction {
   }
 }
 
-export class DoneEditingAction extends ControlAction {
+export class DoneEditingCommand extends ControlCommand {
   name = "doneEditing";
 
   isPossible(state: State): boolean {
@@ -47,19 +47,7 @@ export class DoneEditingAction extends ControlAction {
   }
 }
 
-function performStep(state: State, next: NextFunction) {
-  // Used as the basis for both StepAction's transformer and RunAction's effect.
-  const configuration = next(state.configuration);
-  const status = configuration === null ? 'Terminated' : state.status;
-  return {
-    ...state,
-    status: status,
-    configuration: configuration,
-    intervalId: null
-  }
-}
-
-export class StepAction extends ControlAction {
+export class StepCommand extends ControlCommand {
   name = "step";
 
   isPossible(state: State): boolean {
@@ -67,11 +55,18 @@ export class StepAction extends ControlAction {
   }
 
   transformer(state: State): State {
-    return performStep(state, this.next);
+    const configuration = this.next(state.configuration);
+    const status = configuration === null ? 'Terminated' : state.status;
+    return {
+      ...state,
+      status: status,
+      configuration: configuration,
+      intervalId: null
+    }
   }
 }
 
-export class RunAction extends ControlAction {
+export class RunCommand extends ControlCommand {
   name = "run";
 
   isPossible(state: State): boolean {
@@ -96,7 +91,7 @@ export class RunAction extends ControlAction {
 
 }
 
-export class StopAction extends ControlAction {
+export class StopCommand extends ControlCommand {
   name = "stop";
 
   isPossible(state: State): boolean {
@@ -120,7 +115,7 @@ export class StopAction extends ControlAction {
   }
 }
 
-export class ResetAction extends ControlAction {
+export class ResetCommand extends ControlCommand {
   name = "reset";
 
   isPossible(state: State): boolean {
@@ -138,27 +133,27 @@ export class ResetAction extends ControlAction {
 
 // ------------------------------------------
 
-export interface ControlActions {
-  edit: ControlAction;
-  doneEditing: ControlAction;
-  run: ControlAction;
-  stop: ControlAction;
-  step: ControlAction;
-  reset: ControlAction;
+export interface ControlCommands {
+  edit: ControlCommand;
+  doneEditing: ControlCommand;
+  run: ControlCommand;
+  stop: ControlCommand;
+  step: ControlCommand;
+  reset: ControlCommand;
 }
 
-export function createReducer(actions: ControlActions) {
+export function createReducer(commands: ControlCommands) {
 
   const reducer = (state: State, action: Action): State => {
     console.log('action:', action, 'state:', state);
     switch (action.type) {
-      case 'ACTION':
+      case 'COMMAND':
       {
-        const a: ControlAction = actions[action.name];
+        const a: ControlCommand = commands[action.name];
         if (a) {
           state = a.transformer.bind(a)(state);
         } else {
-          console.log('action.name???', action.name, actions);
+          console.log('command name???', action.name, commands);
         };
         break;
       }
@@ -195,15 +190,15 @@ export function createReducer(actions: ControlActions) {
 
 // ------------------------------------------
 
-export function createControlActionsFromSemantics(semantics: Semantics): ControlActions {
+export function createCommandsFromSemantics(semantics: Semantics): ControlCommands {
   const load = semantics.load;
   const next = semantics.next;
   return {
-    edit: new EditAction(load, next),
-    doneEditing: new DoneEditingAction(load, next),
-    run: new RunAction(load, next),
-    stop: new StopAction(load, next),
-    step: new StepAction(load, next),
-    reset: new ResetAction(load, next)
+    edit: new EditCommand(load, next),
+    doneEditing: new DoneEditingCommand(load, next),
+    run: new RunCommand(load, next),
+    stop: new StopCommand(load, next),
+    step: new StepCommand(load, next),
+    reset: new ResetCommand(load, next)
   };
 }
