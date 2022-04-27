@@ -10,15 +10,15 @@ interface ActionButtonProps {
   label: string;
 }
 
-export function makeClickHandler(action: Action, state: State, dispatch: DispatchType) {
+export function makeClickHandler(action: Action, dispatch: DispatchType) {
   return function(e: React.MouseEvent) {
-    action.enact(state, dispatch);
+    dispatch({type: 'ACTION', name: action.name});
   };
 }
 
 export function ActionButton(props: ActionButtonProps) {
   const [state, dispatch] = React.useContext(StoreContext);
-  const onClick = makeClickHandler(props.action, state, dispatch);
+  const onClick = makeClickHandler(props.action, dispatch);
   const disabled = !props.action.isPossible(state);
   return (
     <button className="action-button" disabled={disabled} onClick={onClick}>

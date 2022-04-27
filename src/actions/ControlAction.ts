@@ -2,7 +2,7 @@ import { State } from "../state";
 
 import { BaseAction } from "./BaseAction";
 import { Semantics, LoadFunction, NextFunction } from "../semantics"
-import { DispatchType } from "../components/Store";
+import { DispatchType, Action } from "../components/Store";
 
 
 class ControlAction extends BaseAction {
@@ -119,6 +119,29 @@ export class ResetAction extends ControlAction {
       configuration: this.load(state.initial)
     }
   }
+}
+
+// ------------------------------------------
+
+export function createReducer(actionSet: any) {
+
+  const reducer = (state: State, action: Action): State => {
+    return state;
+  };
+
+  return reducer;
+  /*
+  const load = semantics.load;
+  const next = semantics.next;
+  return {
+    edit: new EditAction(load, next),
+    doneEditing: new DoneEditingAction(load, next),
+    run: new RunAction(load, next),
+    stop: new StopAction(load, next),
+    step: new StepAction(load, next),
+    reset: new ResetAction(load, next)
+  };
+  */
 }
 
 // ------------------------------------------
