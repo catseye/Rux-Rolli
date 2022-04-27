@@ -85,10 +85,11 @@ export class RunAction extends ControlAction {
     }
   }
 
-  effect(state: State, dispatch: DispatchType): void {
+  effect(dispatch: DispatchType): void {
+    const $this = this;
     const intervalId = setTimeout(() => {
       dispatch({type: 'ACTION', name: 'step'});
-      new RunAction(this.load, this.next).effect(state, dispatch);
+      $this.effect(dispatch);
     }, 250);
     dispatch({type: 'SET_TIMER', intervalId: intervalId});
   }
@@ -109,10 +110,12 @@ export class StopAction extends ControlAction {
     }
   }
 
-  effect(state: State, dispatch: DispatchType): void {
+  effect(dispatch: DispatchType): void {
+    /*
     if (state.intervalId) {
       clearTimeout(state.intervalId);
     }
+    */
     dispatch({type: 'CLEAR_TIMER'});
   }
 }
@@ -147,6 +150,7 @@ export interface ControlActions {
 export function createReducer(actions: ControlActions) {
 
   const reducer = (state: State, action: Action): State => {
+    console.log('action:', action, 'state:', state);
     switch (action.type) {
       case 'ACTION':
       {

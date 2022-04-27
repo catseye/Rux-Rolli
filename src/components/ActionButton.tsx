@@ -12,6 +12,7 @@ interface ActionButtonProps {
 
 export function makeClickHandler(action: Action, dispatch: DispatchType) {
   return function(e: React.MouseEvent) {
+    action.effect(dispatch);
     const message = {type: 'ACTION', name: action.name};
     dispatch(message);
   };

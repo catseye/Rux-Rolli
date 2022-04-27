@@ -5,7 +5,7 @@ export interface Action {
   name: string,
   isPossible: (state: State) => boolean;
   transformer: (state: State) => State;
-  effect: (state: State, dispatch: DispatchType) => void;
+  effect: (dispatch: DispatchType) => void;
 }
 
 export class BaseAction {
@@ -19,6 +19,6 @@ export class BaseAction {
     return state;
   }
 
-  effect(state: State, dispatch: DispatchType): void {
+  effect(dispatch: DispatchType): void {
   }
 }
