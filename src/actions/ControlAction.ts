@@ -87,7 +87,7 @@ export class RunAction extends ControlAction {
 
   effect(state: State, dispatch: DispatchType): void {
     const intervalId = setTimeout(() => {
-      dispatch({type: 'STEP'});
+      dispatch({type: 'ACTION', name: 'step'});
       new RunAction(this.load, this.next).effect(state, dispatch);
     }, 250);
     dispatch({type: 'SET_TIMER', intervalId: intervalId});
@@ -149,12 +149,39 @@ export function createReducer(actions: ControlActions) {
   const reducer = (state: State, action: Action): State => {
     switch (action.type) {
       case 'ACTION':
+      {
         const a: ControlAction = actions[action.name];
         if (a) {
           state = a.transformer.bind(a)(state);
         } else {
           console.log('action.name???', action.name, actions);
-        }
+        };
+        break;
+      }
+      case 'SET_PROGRAM_TEXT':
+      {
+        state = {
+          ...state,
+          initial: action.initial
+        };
+        break;
+      }
+      case 'SET_TIMER':
+      {
+        state = {
+          ...state,
+          intervalId: action.intervalId
+        };
+        break;
+      }
+      case 'CLEAR_TIMER':
+      {
+        state = {
+          ...state,
+          intervalId: null
+        };
+        break;
+      }
     }
     return state;
   };
