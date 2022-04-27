@@ -1,7 +1,8 @@
-import { State, SetStateType } from "../state";
+import { State } from "../state";
 
 import { BaseAction } from "./BaseAction";
 import { Semantics, LoadFunction, NextFunction } from "../semantics"
+import { DispatchType, Action } from "../components/Store";
 
 
 class ControlAction extends BaseAction {
@@ -16,6 +17,8 @@ class ControlAction extends BaseAction {
 }
 
 export class EditAction extends ControlAction {
+  name = "edit";
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped' || state.status === 'Terminated';
   }
@@ -29,6 +32,8 @@ export class EditAction extends ControlAction {
 }
 
 export class DoneEditingAction extends ControlAction {
+  name = "doneEditing";
+
   isPossible(state: State): boolean {
     return state.status === 'Editing';
   }
@@ -55,6 +60,8 @@ function performStep(state: State, next: NextFunction) {
 }
 
 export class StepAction extends ControlAction {
+  name = "step";
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -65,6 +72,8 @@ export class StepAction extends ControlAction {
 }
 
 export class RunAction extends ControlAction {
+  name = "run";
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -76,20 +85,19 @@ export class RunAction extends ControlAction {
     }
   }
 
-  effect(state: State, setState: SetStateType): void {
+  effect(state: State, dispatch: DispatchType): void {
     const intervalId = setTimeout(() => {
-      setState((state: State) => performStep(state, this.next));
-      new RunAction(this.load, this.next).effect(state, setState);
+      dispatch({type: 'STEP'});
+      new RunAction(this.load, this.next).effect(state, dispatch);
     }, 250);
-    setState((state: State) => ({
-      ...state,
-      intervalId: intervalId
-    }));
+    dispatch({type: 'SET_TIMER', intervalId: intervalId});
   }
 
 }
 
 export class StopAction extends ControlAction {
+  name = "stop";
+
   isPossible(state: State): boolean {
     return state.status === 'Running';
   }
@@ -101,18 +109,17 @@ export class StopAction extends ControlAction {
     }
   }
 
-  effect(state: State, setState: SetStateType): void {
+  effect(state: State, dispatch: DispatchType): void {
     if (state.intervalId) {
       clearTimeout(state.intervalId);
     }
-    setState((state: State) => ({
-      ...state,
-      intervalId: null
-    }));
+    dispatch({type: 'CLEAR_TIMER'});
   }
 }
 
 export class ResetAction extends ControlAction {
+  name = "reset";
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped' || state.status === 'Terminated';
   }
@@ -128,7 +135,36 @@ export class ResetAction extends ControlAction {
 
 // ------------------------------------------
 
-export function createControlActionsFromSemantics(semantics: Semantics) {
+export interface ControlActions {
+  edit: ControlAction;
+  doneEditing: ControlAction;
+  run: ControlAction;
+  stop: ControlAction;
+  step: ControlAction;
+  reset: ControlAction;
+}
+
+export function createReducer(actions: ControlActions) {
+
+  const reducer = (state: State, action: Action): State => {
+    switch (action.type) {
+      case 'ACTION':
+        const a: ControlAction = actions[action.name];
+        if (a) {
+          state = a.transformer.bind(a)(state);
+        } else {
+          console.log('action.name???', action.name, actions);
+        }
+    }
+    return state;
+  };
+
+  return reducer;
+}
+
+// ------------------------------------------
+
+export function createControlActionsFromSemantics(semantics: Semantics): ControlActions {
   const load = semantics.load;
   const next = semantics.next;
   return {

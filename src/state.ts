@@ -6,5 +6,3 @@ export interface State {
   configuration: Configuration | null;
   intervalId: any;  // TODO "NodeJS.Timeout"
 }
-
-export type SetStateType = (fun:(s: State) => State) => void;
