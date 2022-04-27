@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { State, SetStateType } from "../state";
+import { State } from "../state";
 
-import { StoreContext } from "./Store";
+import { DispatchType, StoreContext } from "./Store";
 import { Action } from "../actions/BaseAction";
 
 interface ActionButtonProps {
@@ -10,15 +10,15 @@ interface ActionButtonProps {
   label: string;
 }
 
-export function makeClickHandler(action: Action, state: State, setState: SetStateType) {
+export function makeClickHandler(action: Action, state: State, dispatch: DispatchType) {
   return function(e: React.MouseEvent) {
-    action.enact(state, setState);
+    action.enact(state, dispatch);
   };
 }
 
 export function ActionButton(props: ActionButtonProps) {
-  const [state, setState] = React.useContext(StoreContext);
-  const onClick = makeClickHandler(props.action, state, setState);
+  const [state, dispatch] = React.useContext(StoreContext);
+  const onClick = makeClickHandler(props.action, state, dispatch);
   const disabled = !props.action.isPossible(state);
   return (
     <button className="action-button" disabled={disabled} onClick={onClick}>

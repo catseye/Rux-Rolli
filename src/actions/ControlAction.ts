@@ -1,7 +1,8 @@
-import { State, SetStateType } from "../state";
+import { State } from "../state";
 
 import { BaseAction } from "./BaseAction";
 import { Semantics, LoadFunction, NextFunction } from "../semantics"
+import { DispatchType } from "../components/Store";
 
 
 class ControlAction extends BaseAction {
@@ -76,15 +77,12 @@ export class RunAction extends ControlAction {
     }
   }
 
-  effect(state: State, setState: SetStateType): void {
+  effect(state: State, dispatch: DispatchType): void {
     const intervalId = setTimeout(() => {
-      setState((state: State) => performStep(state, this.next));
-      new RunAction(this.load, this.next).effect(state, setState);
+      dispatch({type: 'STEP'});
+      new RunAction(this.load, this.next).effect(state, dispatch);
     }, 250);
-    setState((state: State) => ({
-      ...state,
-      intervalId: intervalId
-    }));
+    dispatch({type: 'SET_TIMER', intervalId: intervalId});
   }
 
 }
@@ -101,14 +99,11 @@ export class StopAction extends ControlAction {
     }
   }
 
-  effect(state: State, setState: SetStateType): void {
+  effect(state: State, dispatch: DispatchType): void {
     if (state.intervalId) {
       clearTimeout(state.intervalId);
     }
-    setState((state: State) => ({
-      ...state,
-      intervalId: null
-    }));
+    dispatch({type: 'CLEAR_TIMER'});
   }
 }
 
