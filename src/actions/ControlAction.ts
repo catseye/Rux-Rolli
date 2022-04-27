@@ -17,7 +17,7 @@ class ControlAction extends BaseAction {
 }
 
 export class EditAction extends ControlAction {
-  name = "Edit";
+  name = "edit";
 
   isPossible(state: State): boolean {
     return state.status === 'Stopped' || state.status === 'Terminated';
@@ -32,7 +32,7 @@ export class EditAction extends ControlAction {
 }
 
 export class DoneEditingAction extends ControlAction {
-  name = "Done";
+  name = "doneEditing";
 
   isPossible(state: State): boolean {
     return state.status === 'Editing';
@@ -60,7 +60,7 @@ function performStep(state: State, next: NextFunction) {
 }
 
 export class StepAction extends ControlAction {
-  name = "Step";
+  name = "step";
 
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
@@ -72,7 +72,7 @@ export class StepAction extends ControlAction {
 }
 
 export class RunAction extends ControlAction {
-  name = "Run";
+  name = "run";
 
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
@@ -96,7 +96,7 @@ export class RunAction extends ControlAction {
 }
 
 export class StopAction extends ControlAction {
-  name = "Stop";
+  name = "stop";
 
   isPossible(state: State): boolean {
     return state.status === 'Running';
@@ -118,7 +118,7 @@ export class StopAction extends ControlAction {
 }
 
 export class ResetAction extends ControlAction {
-  name = "Reset";
+  name = "reset";
 
   isPossible(state: State): boolean {
     return state.status === 'Stopped' || state.status === 'Terminated';
@@ -135,13 +135,26 @@ export class ResetAction extends ControlAction {
 
 // ------------------------------------------
 
-export function createReducer(actionSet: any) {
+export interface ControlActions {
+  edit: ControlAction;
+  doneEditing: ControlAction;
+  run: ControlAction;
+  stop: ControlAction;
+  step: ControlAction;
+  reset: ControlAction;
+}
+
+export function createReducer(actions: ControlActions) {
 
   const reducer = (state: State, action: Action): State => {
-    console.log(action);
     switch (action.type) {
       case 'ACTION':
-        return actionSet[action.name].next(state);
+        const a: ControlAction = actions[action.name];
+        if (a) {
+          state = a.transformer.bind(a)(state);
+        } else {
+          console.log('action.name???', action.name, actions);
+        }
     }
     return state;
   };
@@ -151,7 +164,7 @@ export function createReducer(actionSet: any) {
 
 // ------------------------------------------
 
-export function createControlActionsFromSemantics(semantics: Semantics) {
+export function createControlActionsFromSemantics(semantics: Semantics): ControlActions {
   const load = semantics.load;
   const next = semantics.next;
   return {
