@@ -83,7 +83,7 @@ export class RunCommand extends ControlCommand {
   effect(dispatch: DispatchType): void {
     const $this = this;
     const intervalId = setTimeout(() => {
-      dispatch({type: 'ACTION', name: 'step'});
+      dispatch({type: 'COMMAND', name: 'step'});
       $this.effect(dispatch);
     }, 250);
     dispatch({type: 'SET_TIMER', intervalId: intervalId});
