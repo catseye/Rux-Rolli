@@ -5,10 +5,12 @@ export interface Action {
   name: string,
   isPossible: (state: State) => boolean;
   transformer: (state: State) => State;
-  effect?: (state: State, dispatch: DispatchType) => void;
+  effect: (state: State, dispatch: DispatchType) => void;
 }
 
 export class BaseAction {
+  name: string;
+
   isPossible(state: State): boolean {
     return false;
   }

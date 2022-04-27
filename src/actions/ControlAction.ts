@@ -17,6 +17,8 @@ class ControlAction extends BaseAction {
 }
 
 export class EditAction extends ControlAction {
+  name = "Edit";
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped' || state.status === 'Terminated';
   }
@@ -30,6 +32,8 @@ export class EditAction extends ControlAction {
 }
 
 export class DoneEditingAction extends ControlAction {
+  name = "Done";
+
   isPossible(state: State): boolean {
     return state.status === 'Editing';
   }
@@ -56,6 +60,8 @@ function performStep(state: State, next: NextFunction) {
 }
 
 export class StepAction extends ControlAction {
+  name = "Step";
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -66,6 +72,8 @@ export class StepAction extends ControlAction {
 }
 
 export class RunAction extends ControlAction {
+  name = "Run";
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -88,6 +96,8 @@ export class RunAction extends ControlAction {
 }
 
 export class StopAction extends ControlAction {
+  name = "Stop";
+
   isPossible(state: State): boolean {
     return state.status === 'Running';
   }
@@ -108,6 +118,8 @@ export class StopAction extends ControlAction {
 }
 
 export class ResetAction extends ControlAction {
+  name = "Reset";
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped' || state.status === 'Terminated';
   }
@@ -126,22 +138,15 @@ export class ResetAction extends ControlAction {
 export function createReducer(actionSet: any) {
 
   const reducer = (state: State, action: Action): State => {
+    console.log(action);
+    switch (action.type) {
+      case 'ACTION':
+        return actionSet[action.name].next(state);
+    }
     return state;
   };
 
   return reducer;
-  /*
-  const load = semantics.load;
-  const next = semantics.next;
-  return {
-    edit: new EditAction(load, next),
-    doneEditing: new DoneEditingAction(load, next),
-    run: new RunAction(load, next),
-    stop: new StopAction(load, next),
-    step: new StepAction(load, next),
-    reset: new ResetAction(load, next)
-  };
-  */
 }
 
 // ------------------------------------------

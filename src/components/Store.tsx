@@ -1,4 +1,5 @@
 import * as React from "react";
+import { createReducer } from "../actions/ControlAction";
 
 import { Configuration } from "../configurations/Configuration";
 import { State } from "../state";
@@ -7,10 +8,8 @@ export const StoreContext = React.createContext<[State, DispatchType]>(null);
 
 export type Action = any;
 
-export function initializeStore(programText: string, configuration: Configuration) {
-  const reducer = (state: State, action: Action) => {
-    return state
-  };
+export function initializeStore(programText: string, configuration: Configuration, actions: any) {
+  const reducer = createReducer(actions);
   const makeInitialState = (programText: string): State => {
     return {
       status: 'Stopped',

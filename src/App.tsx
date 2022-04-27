@@ -21,7 +21,7 @@ interface SemanticsContainerProps {
 function SemanticsContainer(props: SemanticsContainerProps) {
   const actions = createControlActionsFromSemantics(props.semantics);
   const programText = 'THUSNESS';
-  const [state, dispatch] = initializeStore(programText, props.semantics.load(programText));
+  const [state, dispatch] = initializeStore(programText, props.semantics.load(programText), actions);
 
   return (
     <StoreContext.Provider value={[state, dispatch]}>
