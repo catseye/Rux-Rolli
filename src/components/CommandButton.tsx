@@ -12,7 +12,7 @@ interface CommandButtonProps {
 
 export function makeClickHandler(command: Command, state: State, setState: SetStateType) {
   return function(e: React.MouseEvent) {
-    command.enact(state, setState);
+    command.enact.bind(command)(state, setState);
   };
 }
 

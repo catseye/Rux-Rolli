@@ -26,9 +26,10 @@ export function Display(props: DisplayProps) {
       </div>
     );
   } else if (props.configuration.type === "composite") {
+    // FIXME: need better key
     return (
       <div className="display-composite">
-        {props.configuration.contents.map((c) => <Display configuration={c} />)}
+        {props.configuration.contents.map((c) => <Display key={c.type} configuration={c} />)}
       </div>
     );
   } else {
