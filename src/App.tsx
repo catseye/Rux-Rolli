@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { State } from "./state";
-import { StoreContext } from "./components/Store";
+import { StoreContext, initializeStore } from "./components/Store";
 import { createControlActionsFromSemantics } from "./actions/ControlAction";
 import { Semantics } from "./semantics";
 import { Hencemuffin } from "./semantics/Hencemuffin";
@@ -20,17 +20,8 @@ interface SemanticsContainerProps {
 
 function SemanticsContainer(props: SemanticsContainerProps) {
   const actions = createControlActionsFromSemantics(props.semantics);
-
   const programText = 'THUSNESS';
-
-  const initialState: State = {
-    status: 'Stopped',
-    initial: programText,
-    configuration: props.semantics.load(programText),
-    intervalId: null,
-    requestedEffect: null
-  };
-  const [state, setState] = React.useState<State>(initialState);
+  const [state, setState] = initializeStore(programText, props.semantics.load(programText), actions);
 
   React.useEffect(() => {
     if (state.requestedEffect) {
