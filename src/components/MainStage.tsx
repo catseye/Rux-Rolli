@@ -2,7 +2,6 @@ import * as React from "react";
 
 import { ChangeEvent } from "react";
 
-import { State } from "../state";
 import { ControlCommands } from "../commands/ControlCommand";
 
 import { StoreContext } from "./Store";
@@ -15,12 +14,9 @@ interface MainStageProps {
 }
 
 export function MainStage(props: MainStageProps) {
-  const [state, setState] = React.useContext(StoreContext);
+  const [state, dispatch] = React.useContext(StoreContext);
   const onEditorChange = function(ev: ChangeEvent<HTMLTextAreaElement>) {
-    setState((state: State) => ({
-      ...state,
-      initial: ev.target.value
-    }));
+    dispatch({type: 'SET_PROGRAM_TEXT', initial: ev.target.value});
   };
   return (
     <div>
