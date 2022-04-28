@@ -3,6 +3,7 @@ import * as React from "react";
 import { ChangeEvent } from "react";
 
 import { State } from "../state";
+import { ControlActions } from "../actions/ControlAction";
 
 import { StoreContext } from "./Store";
 import { ActionButton } from "./ActionButton";
@@ -10,7 +11,7 @@ import { Editor } from "./Editor";
 import { Display } from "./Display";
 
 interface MainStageProps {
-  actions: any;
+  actions: ControlActions;
 }
 
 export function MainStage(props: MainStageProps) {

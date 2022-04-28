@@ -16,6 +16,8 @@ class ControlAction extends BaseAction {
 }
 
 export class EditAction extends ControlAction {
+  name = "edit";
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped' || state.status === 'Terminated';
   }
@@ -29,6 +31,8 @@ export class EditAction extends ControlAction {
 }
 
 export class DoneEditingAction extends ControlAction {
+  name = "doneEditing";
+
   isPossible(state: State): boolean {
     return state.status === 'Editing';
   }
@@ -55,6 +59,8 @@ function performStep(state: State, next: NextFunction) {
 }
 
 export class StepAction extends ControlAction {
+  name = "step";
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -65,6 +71,8 @@ export class StepAction extends ControlAction {
 }
 
 export class RunAction extends ControlAction {
+  name = "run";
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped';
   }
@@ -90,6 +98,8 @@ export class RunAction extends ControlAction {
 }
 
 export class StopAction extends ControlAction {
+  name = "stop";
+
   isPossible(state: State): boolean {
     return state.status === 'Running';
   }
@@ -114,6 +124,8 @@ export class StopAction extends ControlAction {
 }
 
 export class ResetAction extends ControlAction {
+  name = "reset";
+
   isPossible(state: State): boolean {
     return state.status === 'Stopped' || state.status === 'Terminated';
   }
@@ -129,7 +141,18 @@ export class ResetAction extends ControlAction {
 
 // ------------------------------------------
 
-export function createControlActionsFromSemantics(semantics: Semantics) {
+export interface ControlActions {
+  edit: ControlAction;
+  doneEditing: ControlAction;
+  run: ControlAction;
+  stop: ControlAction;
+  step: ControlAction;
+  reset: ControlAction;
+}
+
+// ------------------------------------------
+
+export function createControlActionsFromSemantics(semantics: Semantics): ControlActions {
   const load = semantics.load;
   const next = semantics.next;
   return {

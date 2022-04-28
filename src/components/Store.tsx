@@ -5,7 +5,7 @@ import { Configuration } from "../configurations/Configuration";
 
 export const StoreContext = React.createContext<[State, SetStateType]>(null);
 
-export function initializeStore(programText: string, configuration: Configuration, actions: any) {
+export function initializeStore(programText: string, configuration: Configuration) {
   const makeInitialState = (programText: string): State => {
     return {
       status: 'Stopped',

@@ -1,6 +1,7 @@
 import { State, SetStateType } from "../state";
 
 export interface Action {
+  name: string;
   isPossible: (state: State) => boolean;
   transformer: (state: State) => State;
   effect?: (state: State, setState: SetStateType) => void;
@@ -8,6 +9,8 @@ export interface Action {
 }
 
 export class BaseAction {
+  name: string;
+
   enact(state: State, setState: SetStateType): void {
     if (this.isPossible(state)) {
       this.effect(state, setState);

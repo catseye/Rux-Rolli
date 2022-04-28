@@ -21,7 +21,7 @@ interface SemanticsContainerProps {
 function SemanticsContainer(props: SemanticsContainerProps) {
   const actions = createControlActionsFromSemantics(props.semantics);
   const programText = 'THUSNESS';
-  const [state, setState] = initializeStore(programText, props.semantics.load(programText), actions);
+  const [state, setState] = initializeStore(programText, props.semantics.load(programText));
 
   React.useEffect(() => {
     if (state.requestedEffect) {
