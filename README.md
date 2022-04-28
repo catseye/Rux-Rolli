@@ -28,15 +28,15 @@ could one day be built).
 Rux Rolli is written in TypeScript.  The included build command
 translates it to JavaScript using browserify and [tsify][].
 
-#### Examinable Action Objects
+#### Examinable Command Objects
 
 A notable architectural feature is the class hierarchy of
-`Action` objects.  Each of these objects is self-describing
+`Command` objects.  Each of these objects is self-describing
 in the sense that it defines its own preconditions, state
 transformation, and side effects, and these can be examined
 seperately by other objects.  So, for example, the
-`ActionButton` component can consult the precondition of
-its `Action` to determine whether the UI button is disabled
+`CommandButton` component can consult the precondition of
+its `Command` to determine whether the UI button is disabled
 or enabled.
 
 Further, the state transformations can be collected and
@@ -56,7 +56,7 @@ a diagram outlining the current state structure:
 #### Small-Step Operational Semantics
 
 An esolang (or other computational animation) is defined by
-a number of pure functions, which the `Action` objects apply
+a number of pure functions, which the `Command` objects apply
 as part of their state transformation.  These functions
 include:
 
@@ -72,8 +72,8 @@ description of the program state.
 
 #### Self-Describing Configurations
 
-Also notable is the fact that a configuration is (similar
-to `Action` objects) a self-describing data structure.
+Also notable is the fact that a configuration, much like
+a `Command` object, is a self-describing data structure.
 
 It may consist of playfields, stacks, queues, tapes, and so
 forth.  Each of these is represented as a JavaScript object,
@@ -89,12 +89,12 @@ sensibly in the DOM (knock on wood).
 #### Transducers (The Elm Architecture)
 
 We have a situation where a background event -- namely, a
-JavaScript timeout expriring -- triggers an `Action`.
+JavaScript timeout expriring -- triggers an `Command`.
 
 If we have a reducer, we can simply `dispatch` when this
 happens.
 
-However, in this instance, we want the action to perform
+However, in this instance, we want the command to perform
 some side effect (namely, cancelling the timer) under
 some conditions (namely, the program has halted).
 

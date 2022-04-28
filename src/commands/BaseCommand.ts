@@ -1,6 +1,6 @@
 import { State, SetStateType } from "../state";
 
-export interface Action {
+export interface Command {
   name: string;
   isPossible: (state: State) => boolean;
   transformer: (state: State) => State;
@@ -8,7 +8,7 @@ export interface Action {
   enact: (state: State, setState: SetStateType) => void;
 }
 
-export class BaseAction {
+export class BaseCommand {
   name: string;
 
   enact(state: State, setState: SetStateType): void {

@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 
 import { State } from "./state";
 import { StoreContext, initializeStore } from "./components/Store";
-import { createControlActionsFromSemantics } from "./actions/ControlAction";
+import { createCommandsFromSemantics } from "./commands/ControlCommand";
 import { Semantics } from "./semantics";
 import { Hencemuffin } from "./semantics/Hencemuffin";
 import { Thencemuffin } from "./semantics/Thencemuffin";
@@ -19,7 +19,7 @@ interface SemanticsContainerProps {
 }
 
 function SemanticsContainer(props: SemanticsContainerProps) {
-  const actions = createControlActionsFromSemantics(props.semantics);
+  const commands = createCommandsFromSemantics(props.semantics);
   const programText = 'THUSNESS';
   const [state, setState] = initializeStore(programText, props.semantics.load(programText));
 
@@ -48,7 +48,7 @@ function SemanticsContainer(props: SemanticsContainerProps) {
 
   return (
     <StoreContext.Provider value={[state, setState]}>
-      <MainStage actions={actions}/>
+      <MainStage commands={commands}/>
     </StoreContext.Provider>
   );
 }

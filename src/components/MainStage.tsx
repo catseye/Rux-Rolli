@@ -3,15 +3,15 @@ import * as React from "react";
 import { ChangeEvent } from "react";
 
 import { State } from "../state";
-import { ControlActions } from "../actions/ControlAction";
+import { ControlCommands } from "../commands/ControlCommand";
 
 import { StoreContext } from "./Store";
-import { ActionButton } from "./ActionButton";
+import { CommandButton } from "./CommandButton";
 import { Editor } from "./Editor";
 import { Display } from "./Display";
 
 interface MainStageProps {
-  actions: ControlActions;
+  commands: ControlCommands;
 }
 
 export function MainStage(props: MainStageProps) {
@@ -25,12 +25,12 @@ export function MainStage(props: MainStageProps) {
   return (
     <div>
       <div>
-        <ActionButton action={props.actions.edit} label="Edit" />
-        <ActionButton action={props.actions.doneEditing} label="Done" />
-        <ActionButton action={props.actions.step} label="Step" />
-        <ActionButton action={props.actions.run} label="Run" />
-        <ActionButton action={props.actions.stop} label="Stop" />
-        <ActionButton action={props.actions.reset} label="Reset" />
+        <CommandButton command={props.commands.edit} label="Edit" />
+        <CommandButton command={props.commands.doneEditing} label="Done" />
+        <CommandButton command={props.commands.step} label="Step" />
+        <CommandButton command={props.commands.run} label="Run" />
+        <CommandButton command={props.commands.stop} label="Stop" />
+        <CommandButton command={props.commands.reset} label="Reset" />
       </div>
       <div>
         {state.status === 'Editing' ?

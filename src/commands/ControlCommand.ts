@@ -1,10 +1,10 @@
 import { State, SetStateType } from "../state";
 
-import { BaseAction } from "./BaseAction";
+import { BaseCommand } from "./BaseCommand";
 import { Semantics, LoadFunction, NextFunction } from "../semantics"
 
 
-class ControlAction extends BaseAction {
+class ControlCommand extends BaseCommand {
   load: LoadFunction;
   next: NextFunction;
 
@@ -15,7 +15,7 @@ class ControlAction extends BaseAction {
   }
 }
 
-export class EditAction extends ControlAction {
+export class EditCommand extends ControlCommand {
   name = "edit";
 
   isPossible(state: State): boolean {
@@ -30,7 +30,7 @@ export class EditAction extends ControlAction {
   }
 }
 
-export class DoneEditingAction extends ControlAction {
+export class DoneEditingCommand extends ControlCommand {
   name = "doneEditing";
 
   isPossible(state: State): boolean {
@@ -47,7 +47,7 @@ export class DoneEditingAction extends ControlAction {
 }
 
 function performStep(state: State, next: NextFunction) {
-  // Used as the basis for both StepAction's transformer and RunAction's effect.
+  // Used as the basis for both StepCommand's transformer and RunCommand's effect.
   const configuration = next(state.configuration);
   const status = configuration === null ? 'Terminated' : state.status;
   return {
@@ -58,7 +58,7 @@ function performStep(state: State, next: NextFunction) {
   }
 }
 
-export class StepAction extends ControlAction {
+export class StepCommand extends ControlCommand {
   name = "step";
 
   isPossible(state: State): boolean {
@@ -70,7 +70,7 @@ export class StepAction extends ControlAction {
   }
 }
 
-export class RunAction extends ControlAction {
+export class RunCommand extends ControlCommand {
   name = "run";
 
   isPossible(state: State): boolean {
@@ -87,7 +87,7 @@ export class RunAction extends ControlAction {
   effect(state: State, setState: SetStateType): void {
     const intervalId = setTimeout(() => {
       setState((state: State) => performStep(state, this.next));
-      new RunAction(this.load, this.next).effect(state, setState);
+      new RunCommand(this.load, this.next).effect(state, setState);
     }, 250);
     setState((state: State) => ({
       ...state,
@@ -97,7 +97,7 @@ export class RunAction extends ControlAction {
 
 }
 
-export class StopAction extends ControlAction {
+export class StopCommand extends ControlCommand {
   name = "stop";
 
   isPossible(state: State): boolean {
@@ -123,7 +123,7 @@ export class StopAction extends ControlAction {
   }
 }
 
-export class ResetAction extends ControlAction {
+export class ResetCommand extends ControlCommand {
   name = "reset";
 
   isPossible(state: State): boolean {
@@ -141,26 +141,26 @@ export class ResetAction extends ControlAction {
 
 // ------------------------------------------
 
-export interface ControlActions {
-  edit: ControlAction;
-  doneEditing: ControlAction;
-  run: ControlAction;
-  stop: ControlAction;
-  step: ControlAction;
-  reset: ControlAction;
+export interface ControlCommands {
+  edit: ControlCommand;
+  doneEditing: ControlCommand;
+  run: ControlCommand;
+  stop: ControlCommand;
+  step: ControlCommand;
+  reset: ControlCommand;
 }
 
 // ------------------------------------------
 
-export function createControlActionsFromSemantics(semantics: Semantics): ControlActions {
+export function createCommandsFromSemantics(semantics: Semantics): ControlCommands {
   const load = semantics.load;
   const next = semantics.next;
   return {
-    edit: new EditAction(load, next),
-    doneEditing: new DoneEditingAction(load, next),
-    run: new RunAction(load, next),
-    stop: new StopAction(load, next),
-    step: new StepAction(load, next),
-    reset: new ResetAction(load, next)
+    edit: new EditCommand(load, next),
+    doneEditing: new DoneEditingCommand(load, next),
+    run: new RunCommand(load, next),
+    stop: new StopCommand(load, next),
+    step: new StepCommand(load, next),
+    reset: new ResetCommand(load, next)
   };
 }
