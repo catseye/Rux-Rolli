@@ -5,6 +5,7 @@ export interface State {
   initial: string;
   configuration: Configuration | null;
   intervalId: any;  // TODO "NodeJS.Timeout"
+  requestedEffect: string | null;
 }
 
 export type SetStateType = (fun:(s: State) => State) => void;

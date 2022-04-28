@@ -97,18 +97,19 @@ export class StopAction extends ControlAction {
   transformer(state: State): State {
     return {
       ...state,
-      status: 'Stopped'
+      status: 'Stopped',
+      requestedEffect: 'CancelTimer'
     }
   }
 
   effect(state: State, setState: SetStateType): void {
-    if (state.intervalId) {
-      clearTimeout(state.intervalId);
-    }
-    setState((state: State) => ({
-      ...state,
-      intervalId: null
-    }));
+    // if (state.intervalId) {
+    //   clearTimeout(state.intervalId);
+    // }
+    // setState((state: State) => ({
+    //   ...state,
+    //   intervalId: null
+    // }));
   }
 }
 

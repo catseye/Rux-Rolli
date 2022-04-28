@@ -27,12 +27,36 @@ function SemanticsContainer(props: SemanticsContainerProps) {
     status: 'Stopped',
     initial: programText,
     configuration: props.semantics.load(programText),
-    intervalId: null
+    intervalId: null,
+    requestedEffect: null
   };
-  const [state, stateSetState] = React.useState<State>(initialState);
+  const [state, setState] = React.useState<State>(initialState);
+
+  React.useEffect(() => {
+    if (state.requestedEffect) {
+      console.log('requestedEffect', state.requestedEffect)
+      if (state.requestedEffect === 'CancelTimer') {
+        clearTimeout(state.intervalId);
+        setState((state) => {
+          return {
+            ...state,
+            intervalId: null
+          }
+        });
+      }
+      setState((state) => {
+        return {
+          ...state,
+          requestedEffect: null
+        }
+      });
+    } else {
+      console.log('no requestedEffect...')
+    }
+  });
 
   return (
-    <StoreContext.Provider value={[state, stateSetState]}>
+    <StoreContext.Provider value={[state, setState]}>
       <MainStage actions={actions}/>
     </StoreContext.Provider>
   );
