@@ -21,10 +21,33 @@ interface SemanticsContainerProps {
 function SemanticsContainer(props: SemanticsContainerProps) {
   const commands = createCommandsFromSemantics(props.semantics);
   const programText = 'THUSNESS';
-  const [state, dispatch] = initializeStore(programText, props.semantics.load(programText), commands);
+  const [state, setState] = initializeStore(programText, props.semantics.load(programText));
+
+  React.useEffect(() => {
+    if (state.requestedEffect) {
+      console.log('requestedEffect', state.requestedEffect)
+      if (state.requestedEffect === 'CancelTimer') {
+        clearTimeout(state.intervalId);
+        setState((state) => {
+          return {
+            ...state,
+            intervalId: null
+          }
+        });
+      }
+      setState((state) => {
+        return {
+          ...state,
+          requestedEffect: null
+        }
+      });
+    } else {
+      console.log('no requestedEffect...')
+    }
+  });
 
   return (
-    <StoreContext.Provider value={[state, dispatch]}>
+    <StoreContext.Provider value={[state, setState]}>
       <MainStage commands={commands}/>
     </StoreContext.Provider>
   );

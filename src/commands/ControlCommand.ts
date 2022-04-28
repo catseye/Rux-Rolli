@@ -1,8 +1,7 @@
-import { State } from "../state";
+import { State, SetStateType } from "../state";
 
 import { BaseCommand } from "./BaseCommand";
 import { Semantics, LoadFunction, NextFunction } from "../semantics"
-import { DispatchType, Action } from "../components/Store";
 
 
 class ControlCommand extends BaseCommand {
@@ -47,6 +46,18 @@ export class DoneEditingCommand extends ControlCommand {
   }
 }
 
+function performStep(state: State, next: NextFunction) {
+  // Used as the basis for both StepCommand's transformer and RunCommand's effect.
+  const configuration = next(state.configuration);
+  const status = configuration === null ? 'Terminated' : state.status;
+  return {
+    ...state,
+    status: status,
+    configuration: configuration,
+    intervalId: null
+  }
+}
+
 export class StepCommand extends ControlCommand {
   name = "step";
 
@@ -55,14 +66,7 @@ export class StepCommand extends ControlCommand {
   }
 
   transformer(state: State): State {
-    const configuration = this.next(state.configuration);
-    const status = configuration === null ? 'Terminated' : state.status;
-    return {
-      ...state,
-      status: status,
-      configuration: configuration,
-      intervalId: null
-    }
+    return performStep(state, this.next);
   }
 }
 
@@ -80,13 +84,15 @@ export class RunCommand extends ControlCommand {
     }
   }
 
-  effect(dispatch: DispatchType): void {
-    const $this = this;
+  effect(state: State, setState: SetStateType): void {
     const intervalId = setTimeout(() => {
-      dispatch({type: 'COMMAND', name: 'step'});
-      $this.effect(dispatch);
+      setState((state: State) => performStep(state, this.next));
+      new RunCommand(this.load, this.next).effect(state, setState);
     }, 250);
-    dispatch({type: 'SET_TIMER', intervalId: intervalId});
+    setState((state: State) => ({
+      ...state,
+      intervalId: intervalId
+    }));
   }
 
 }
@@ -101,17 +107,19 @@ export class StopCommand extends ControlCommand {
   transformer(state: State): State {
     return {
       ...state,
-      status: 'Stopped'
+      status: 'Stopped',
+      requestedEffect: 'CancelTimer'
     }
   }
 
-  effect(dispatch: DispatchType): void {
-    /*
-    if (state.intervalId) {
-      clearTimeout(state.intervalId);
-    }
-    */
-    dispatch({type: 'CLEAR_TIMER'});
+  effect(state: State, setState: SetStateType): void {
+    // if (state.intervalId) {
+    //   clearTimeout(state.intervalId);
+    // }
+    // setState((state: State) => ({
+    //   ...state,
+    //   intervalId: null
+    // }));
   }
 }
 
@@ -140,52 +148,6 @@ export interface ControlCommands {
   stop: ControlCommand;
   step: ControlCommand;
   reset: ControlCommand;
-}
-
-export function createReducer(commands: ControlCommands) {
-
-  const reducer = (state: State, action: Action): State => {
-    console.log('action:', action, 'state:', state);
-    switch (action.type) {
-      case 'COMMAND':
-      {
-        const a: ControlCommand = commands[action.name];
-        if (a) {
-          state = a.transformer.bind(a)(state);
-        } else {
-          console.log('command name???', action.name, commands);
-        };
-        break;
-      }
-      case 'SET_PROGRAM_TEXT':
-      {
-        state = {
-          ...state,
-          initial: action.initial
-        };
-        break;
-      }
-      case 'SET_TIMER':
-      {
-        state = {
-          ...state,
-          intervalId: action.intervalId
-        };
-        break;
-      }
-      case 'CLEAR_TIMER':
-      {
-        state = {
-          ...state,
-          intervalId: null
-        };
-        break;
-      }
-    }
-    return state;
-  };
-
-  return reducer;
 }
 
 // ------------------------------------------

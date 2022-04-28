@@ -3,6 +3,8 @@ import * as React from "react";
 import { ChangeEvent } from "react";
 
 import { ControlCommands } from "../commands/ControlCommand";
+import { State } from "../state";
+
 import { StoreContext } from "./Store";
 import { CommandButton } from "./CommandButton";
 import { Editor } from "./Editor";
@@ -13,9 +15,12 @@ interface MainStageProps {
 }
 
 export function MainStage(props: MainStageProps) {
-  const [state, dispatch] = React.useContext(StoreContext);
+  const [state, setState] = React.useContext(StoreContext);
   const onEditorChange = function(ev: ChangeEvent<HTMLTextAreaElement>) {
-    dispatch({type: 'SET_PROGRAM_TEXT', initial: ev.target.value});
+    setState((state: State) => ({
+      ...state,
+      initial: ev.target.value
+    }));
   };
   return (
     <div>

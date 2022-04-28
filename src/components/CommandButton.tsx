@@ -1,6 +1,8 @@
 import * as React from "react";
 
-import { DispatchType, StoreContext } from "./Store";
+import { State, SetStateType } from "../state";
+
+import { StoreContext } from "./Store";
 import { Command } from "../commands/BaseCommand";
 
 interface CommandButtonProps {
@@ -8,17 +10,15 @@ interface CommandButtonProps {
   label: string;
 }
 
-export function makeClickHandler(command: Command, dispatch: DispatchType) {
+export function makeClickHandler(command: Command, state: State, setState: SetStateType) {
   return function(e: React.MouseEvent) {
-    command.effect(dispatch);
-    const message = {type: 'COMMAND', name: command.name};
-    dispatch(message);
+    command.enact(state, setState);
   };
 }
 
 export function CommandButton(props: CommandButtonProps) {
-  const [state, dispatch] = React.useContext(StoreContext);
-  const onClick = makeClickHandler(props.command, dispatch);
+  const [state, setState] = React.useContext(StoreContext);
+  const onClick = makeClickHandler(props.command, state, setState);
   const disabled = !props.command.isPossible(state);
   return (
     <button className="command-button" disabled={disabled} onClick={onClick}>

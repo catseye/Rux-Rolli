@@ -1,24 +1,19 @@
 import * as React from "react";
-import { createReducer } from "../commands/ControlCommand";
 
+import { State, SetStateType } from "../state";
 import { Configuration } from "../configurations/Configuration";
-import { State } from "../state";
 
-export const StoreContext = React.createContext<[State, DispatchType]>(null);
+export const StoreContext = React.createContext<[State, SetStateType]>(null);
 
-export type Action = any;
-
-export function initializeStore(programText: string, configuration: Configuration, actions: any) {
-  const reducer = createReducer(actions);
+export function initializeStore(programText: string, configuration: Configuration) {
   const makeInitialState = (programText: string): State => {
     return {
       status: 'Stopped',
       initial: programText,
       configuration: configuration,
-      intervalId: null
+      intervalId: null,
+      requestedEffect: null
     };
   };
-  return React.useReducer<React.Reducer<State, Action>, any>(reducer, programText, makeInitialState);
+  return React.useState<State>(makeInitialState(programText));
 }
-
-export type DispatchType = (a: Action) => void;
