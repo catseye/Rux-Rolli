@@ -46,18 +46,6 @@ export class DoneEditingCommand extends ControlCommand {
   }
 }
 
-function performStep(state: State, next: NextFunction) {
-  // Used as the basis for both StepCommand's transformer and RunCommand's effect.
-  const configuration = next(state.configuration);
-  const status = configuration === null ? 'Terminated' : state.status;
-  return {
-    ...state,
-    status: status,
-    configuration: configuration,
-    intervalId: null
-  }
-}
-
 export class StepCommand extends ControlCommand {
   name = "step";
 
@@ -66,7 +54,37 @@ export class StepCommand extends ControlCommand {
   }
 
   transformer(state: State): State {
-    return performStep(state, this.next);
+    const configuration = this.next(state.configuration);
+    const status = configuration === null ? 'Terminated' : state.status;
+    return {
+      ...state,
+      status: status,
+      configuration: configuration
+    }
+  }
+
+  effect = (state: State, setState: SetStateType): void => {
+    // If we take a step, and we are in the 'Running' state,
+    // then we set things up so that we take another step.
+    // (But if we are in 'Stopped' or 'Terminated' we do nothing.)
+    if (state.status === 'Running') {
+      const $this = this;
+      const intervalId = setTimeout(() => {
+        $this.enact(state, setState);
+      }, 250);
+      setState((state: State) => ({
+        ...state,
+        intervalId: intervalId
+      }));
+    } else {
+      if (state.intervalId) {
+        clearTimeout(state.intervalId);
+      }  
+      setState((state: State) => ({
+        ...state,
+        intervalId: null
+      }));
+    }
   }
 }
 
@@ -84,17 +102,6 @@ export class RunCommand extends ControlCommand {
     }
   }
 
-  effect(state: State, setState: SetStateType): void {
-    const intervalId = setTimeout(() => {
-      setState((state: State) => performStep(state, this.next));
-      new RunCommand(this.load, this.next).effect(state, setState);
-    }, 250);
-    setState((state: State) => ({
-      ...state,
-      intervalId: intervalId
-    }));
-  }
-
 }
 
 export class StopCommand extends ControlCommand {
@@ -108,18 +115,13 @@ export class StopCommand extends ControlCommand {
     return {
       ...state,
       status: 'Stopped',
-      requestedEffect: 'CancelTimer'
     }
   }
 
-  effect(state: State, setState: SetStateType): void {
-    // if (state.intervalId) {
-    //   clearTimeout(state.intervalId);
-    // }
-    // setState((state: State) => ({
-    //   ...state,
-    //   intervalId: null
-    // }));
+  effect = (state: State, setState: SetStateType): void => {
+    if (state.intervalId) {
+      clearTimeout(state.intervalId);
+    }
   }
 }
 

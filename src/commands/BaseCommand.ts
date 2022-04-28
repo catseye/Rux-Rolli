@@ -4,17 +4,23 @@ export interface Command {
   name: string;
   isPossible: (state: State) => boolean;
   transformer: (state: State) => State;
-  effect?: (state: State, setState: SetStateType) => void;
+  effect: null | ((state: State, setState: SetStateType) => void);
   enact: (state: State, setState: SetStateType) => void;
 }
 
 export class BaseCommand {
   name: string;
+  effect = null;
 
   enact(state: State, setState: SetStateType): void {
     if (this.isPossible(state)) {
-      this.effect(state, setState);
-      setState(this.transformer.bind(this));
+      const $this = this;
+      setState((state) => {
+        return {
+          ...$this.transformer.bind($this),
+          requestedEffect: $this.effect
+        };
+      });
     }
   }
 
@@ -24,8 +30,5 @@ export class BaseCommand {
 
   transformer(state: State): State {
     return state;
-  }
-
-  effect(state: State, setState: SetStateType): void {
   }
 }

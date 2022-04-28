@@ -7,7 +7,7 @@ interface DisplayProps {
 }
 
 export function Display(props: DisplayProps) {
-  if (props.configuration === null) {
+  if (!props.configuration) {
     // TODO This is less than ideal.  We probably want to
     // display the state in which it halted instead.
     // Such would require a different way of signalling halted.

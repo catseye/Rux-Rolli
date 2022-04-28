@@ -26,23 +26,13 @@ function SemanticsContainer(props: SemanticsContainerProps) {
   React.useEffect(() => {
     if (state.requestedEffect) {
       console.log('requestedEffect', state.requestedEffect)
-      if (state.requestedEffect === 'CancelTimer') {
-        clearTimeout(state.intervalId);
-        setState((state) => {
-          return {
-            ...state,
-            intervalId: null
-          }
-        });
-      }
+      state.requestedEffect(state, setState);
       setState((state) => {
         return {
           ...state,
           requestedEffect: null
-        }
-      });
-    } else {
-      console.log('no requestedEffect...')
+        };
+      })
     }
   });
 
