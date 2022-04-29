@@ -14,7 +14,7 @@ export class BaseCommand {
 
   enact(state: State, setState: SetStateType): void {
     if (this.isPossible(state)) {
-      console.log('ENACT:', this.name, ' state:', state);
+      console.log('ENACT command:', this.name, ' state:', state);
       const $this = this;
       setState((state) => {
         return {
@@ -22,6 +22,8 @@ export class BaseCommand {
           issuedCommands: Array.prototype.concat([$this], [state.issuedCommands])
         };
       });
+    } else {
+      console.log('ENACT -- not possible! command:', this.name, ' state:', state);
     }
   }
 
