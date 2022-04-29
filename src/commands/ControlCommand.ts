@@ -56,7 +56,6 @@ export class StepCommand extends ControlCommand {
   transformer(state: State): State {
     const next = this.next.bind(this);
     const configuration = next(state.configuration);
-    console.log('next:', next, 'new configuration:', configuration);
     const status = configuration === null ? 'Terminated' : state.status;
     return {
       ...state,
@@ -104,6 +103,11 @@ export class RunCommand extends ControlCommand {
     }
   }
 
+  effect = (state: State, setState: SetStateType): void => {
+    // Immediately after transitioning to 'Running' state, take
+    // a step (which will, in this state, trigger subsequent steps).
+    (new StepCommand(this.load, this.next)).enact(state, setState);
+  }
 }
 
 export class StopCommand extends ControlCommand {

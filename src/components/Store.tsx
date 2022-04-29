@@ -12,7 +12,7 @@ export function initializeStore(programText: string, configuration: Configuratio
       initial: programText,
       configuration: configuration,
       intervalId: null,
-      requestedEffect: null
+      issuedCommands: []
     };
   };
   return React.useState<State>(makeInitialState(programText));

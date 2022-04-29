@@ -1,3 +1,4 @@
+import { Command } from "./commands/BaseCommand";
 import { Configuration } from "./configurations/Configuration";
 
 export interface State {
@@ -5,7 +6,7 @@ export interface State {
   initial: string;
   configuration: Configuration | null;
   intervalId: any;  // TODO "NodeJS.Timeout"
-  requestedEffect: null | ((state: State, setState: SetStateType) => void);
+  issuedCommands: Array<Command>;
 }
 
 export type SetStateType = (fun:(s: State) => State) => void;

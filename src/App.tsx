@@ -24,17 +24,22 @@ function SemanticsContainer(props: SemanticsContainerProps) {
   const [state, setState] = initializeStore(programText, props.semantics.load(programText));
 
   React.useEffect(() => {
-    if (state.requestedEffect) {
-      console.log('requestedEffect', state.requestedEffect)
-      state.requestedEffect(state, setState);
+    if (state.issuedCommands.length > 0) {
+      for (let i = state.issuedCommands.length - 1; i >= 0; i--) {
+        const effect = state.issuedCommands[i].effect;
+        if (effect) {
+          console.log('Executing EFFECT:', state.issuedCommands[i].name);
+          effect(state, setState);
+        }
+      }
       setState((state) => {
         return {
           ...state,
-          requestedEffect: null
+          requestedEffect: []
         };
       })
     }
-  });
+  }, [state.issuedCommands]);
 
   return (
     <StoreContext.Provider value={[state, setState]}>

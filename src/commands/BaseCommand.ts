@@ -14,11 +14,12 @@ export class BaseCommand {
 
   enact(state: State, setState: SetStateType): void {
     if (this.isPossible(state)) {
+      console.log('ENACT:', this.name, ' state:', state);
       const $this = this;
       setState((state) => {
         return {
-          ...$this.transformer.bind($this),
-          requestedEffect: $this.effect
+          ...$this.transformer.bind($this)(state),
+          issuedCommands: Array.prototype.concat([$this], [state.issuedCommands])
         };
       });
     }
