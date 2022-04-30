@@ -1,0 +1,33 @@
+initial,
+editing,
+terminated,
+^halted?: program terminated?,
+^empty?: input buffer empty?,
+"awaiting input",
+active {
+  paused, running;
+};
+
+active => ^halted? : step;
+^halted? => terminated: [yes];
+
+^halted? => active: [no];
+
+initial => paused;
+
+paused => editing : edit;
+editing => paused : done;
+
+paused => running : run;
+running => paused : stop;
+paused => paused : reset;
+
+terminated => editing : edit;
+terminated => paused :
+. . . .
+reset;
+
+active => ^empty? : input;
+^empty? => "awaiting input": [yes];
+^empty? => ^halted?: [no];
+"awaiting input" -> ^halted? : "input received";

@@ -5,6 +5,8 @@ Rux Rolli
 interpreters and other computational animations.  It is currently
 a work in progress.
 
+![state machine diagram for Rux Rolli](images/state-machine-diagram.png?raw=true)
+
 ### Quick start
 
 Install node and npm (use nvm).  Clone this repo.  `cd` into this
@@ -48,10 +50,8 @@ for why it's desirable to do this will be made clear below.
 Alternately, the transformations and preconditions could
 (in theory) be used to construct a state machine diagram
 showing the allowable transitions from state to state.  Or
-confirm that it conforms to a given state machine.  Here is
-a diagram outlining the current state structure:
-
-![simple state machine diagram for Rux Rolli](images/state-machine-simple.png?raw=true)
+confirm that it conforms to a given state machine, such as
+the one at the top of this README.
 
 #### Small-Step Operational Semantics
 
