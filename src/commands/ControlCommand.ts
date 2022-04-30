@@ -66,7 +66,7 @@ export class StepCommand extends ControlCommand {
     }
   }
 
-  effect = (state: State, setState: SetStateType): void => {
+  effect(state: State, setState: SetStateType): void {
     // If we take a step, and we are in the 'Running' state,
     // then we set things up so that we take another step.
     // (But if we are in 'Stopped' or 'Terminated' we do nothing.)
@@ -105,7 +105,7 @@ export class RunCommand extends ControlCommand {
     }
   }
 
-  effect = (state: State, setState: SetStateType): void => {
+  effect(state: State, setState: SetStateType): void {
     // Immediately after transitioning to 'Running' state, take
     // a step (which will, in this state, trigger subsequent steps).
     (new StepCommand(this.load, this.next)).enact(state, setState);
@@ -126,7 +126,7 @@ export class StopCommand extends ControlCommand {
     }
   }
 
-  effect = (state: State, setState: SetStateType): void => {
+  effect(state: State, setState: SetStateType): void {
     if (state.intervalId) {
       clearTimeout(state.intervalId);
     }

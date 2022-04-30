@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { State } from "./state";
 import { StoreContext, initializeStore } from "./components/Store";
 import { createCommandsFromSemantics } from "./commands/ControlCommand";
 import { Semantics } from "./semantics";
@@ -26,10 +25,14 @@ function SemanticsContainer(props: SemanticsContainerProps) {
   React.useEffect(() => {
     if (state.issuedCommands.length > 0) {
       for (let i = state.issuedCommands.length - 1; i >= 0; i--) {
-        const effect = state.issuedCommands[i].effect;
-        if (effect) {
-          console.log('Executing EFFECT:', state.issuedCommands[i].name);
+        const command = state.issuedCommands[i];
+        // TODO: effect should always be a function here; but sometimes it isn't?
+        if (command.effect) {
+          const effect = command.effect.bind(command);
+          console.log('EFFECT:', command.name);
           effect(state, setState);
+        } else {
+          console.log('??? command:', command, 'command.effect:', command.effect);
         }
       }
       setState((state) => {

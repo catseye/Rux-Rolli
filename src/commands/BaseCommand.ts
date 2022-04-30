@@ -4,13 +4,12 @@ export interface Command {
   name: string;
   isPossible: (state: State) => boolean;
   transformer: (state: State) => State;
-  effect: null | ((state: State, setState: SetStateType) => void);
+  effect: (state: State, setState: SetStateType) => void;
   enact: (state: State, setState: SetStateType) => void;
 }
 
-export class BaseCommand {
+export class BaseCommand implements Command {
   name: string;
-  effect = null;
 
   enact(state: State, setState: SetStateType): void {
     if (this.isPossible(state)) {
@@ -33,5 +32,13 @@ export class BaseCommand {
 
   transformer(state: State): State {
     return state;
+  }
+
+  /*
+   * Note that the effect is executed *after* the state change;
+   * so the `state` that is received as a parameter here, is the
+   * latest state, and includes any changes made by `transformer`.
+   */
+  effect(state: State, setState: SetStateType): void {
   }
 }
