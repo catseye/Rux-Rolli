@@ -25,19 +25,21 @@ function SemanticsContainer(props: SemanticsContainerProps) {
 
   React.useEffect(() => {
     if (state.issuedCommands.length > 0) {
+      // We register this setState first, so that any setStates that
+      // happen as part of the effects of the issued commands, below,
+      // queue their own issuedCommands onto a new empty list.
+      setState((state: State) => {
+        return {
+          ...state,
+          issuedCommands: []
+        };
+      })
       for (let i = state.issuedCommands.length - 1; i >= 0; i--) {
         const command = state.issuedCommands[i];
         const effect = command.effect.bind(command);
         console.log('EFFECT:', command.name);
         effect(state, setState);
       }
-      setState((state: State) => {
-        return {
-          ...state,
-          // FIXME: actually, any further commands issued by 'effect' above, should be retained here
-          issuedCommands: []
-        };
-      })
     }
   }, [state.issuedCommands]);
 
