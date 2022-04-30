@@ -3,14 +3,14 @@ import * as React from "react";
 import { State, SetStateType } from "../state";
 
 import { StoreContext } from "./Store";
-import { Command } from "../commands/BaseCommand";
+import { BaseCommand } from "../commands/BaseCommand";
 
 interface CommandButtonProps {
-  command: Command;
+  command: BaseCommand;
   label: string;
 }
 
-export function makeClickHandler(command: Command, state: State, setState: SetStateType) {
+export function makeClickHandler(command: BaseCommand, state: State, setState: SetStateType) {
   return function(e: React.MouseEvent) {
     command.enact.bind(command)(state, setState);
   };
