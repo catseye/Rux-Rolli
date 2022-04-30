@@ -22,14 +22,13 @@ export function Display(props: DisplayProps) {
   } else if (props.configuration.type === "stack") {
     return (
       <div className="display-stack">
-        { props.configuration.contents.map((s) => <span>{s}</span>) }
+        { props.configuration.contents.map((s, index) => <span key={index}>{s}</span>) }
       </div>
     );
   } else if (props.configuration.type === "composite") {
-    // FIXME: need better key
     return (
       <div className="display-composite">
-        {props.configuration.contents.map((c) => <Display key={c.type} configuration={c} />)}
+        {props.configuration.contents.map((c, index) => <Display key={index} configuration={c} />)}
       </div>
     );
   } else {
