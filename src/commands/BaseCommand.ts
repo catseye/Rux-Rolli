@@ -18,7 +18,7 @@ export class BaseCommand implements Command {
       setState((state) => {
         return {
           ...$this.transformer.bind($this)(state),
-          issuedCommands: Array.prototype.concat([$this], [state.issuedCommands])
+          issuedCommands: Array.prototype.concat([$this], state.issuedCommands)
         };
       });
     } else {

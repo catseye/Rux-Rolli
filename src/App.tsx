@@ -7,6 +7,7 @@ import { Semantics } from "./semantics";
 import { Hencemuffin } from "./semantics/Hencemuffin";
 import { Thencemuffin } from "./semantics/Thencemuffin";
 import { MainStage } from "./components/MainStage";
+import { State } from "./state";
 
 const allSemantics = {
   Hencemuffin: Hencemuffin,
@@ -26,19 +27,15 @@ function SemanticsContainer(props: SemanticsContainerProps) {
     if (state.issuedCommands.length > 0) {
       for (let i = state.issuedCommands.length - 1; i >= 0; i--) {
         const command = state.issuedCommands[i];
-        // TODO: effect should always be a function here; but sometimes it isn't?
-        if (command.effect) {
-          const effect = command.effect.bind(command);
-          console.log('EFFECT:', command.name);
-          effect(state, setState);
-        } else {
-          console.log('??? command:', command, 'command.effect:', command.effect);
-        }
+        const effect = command.effect.bind(command);
+        console.log('EFFECT:', command.name);
+        effect(state, setState);
       }
-      setState((state) => {
+      setState((state: State) => {
         return {
           ...state,
-          requestedEffect: []
+          // FIXME: actually, any further commands issued by 'effect' above, should be retained here
+          issuedCommands: []
         };
       })
     }
