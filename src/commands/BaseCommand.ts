@@ -18,8 +18,20 @@ export class BaseCommand {
     }
   }
 
+  /*
+   * When the system is in a certain state, certain commands may not be
+   * possible to enact.  This method supports describing that case.
+   */
   isPossible(state: State): boolean {
     return false;
+  }
+
+  /*
+   * Occasionally, even when a command is possible, it will not be available
+   * to the user.  This method supports describing that case.
+   */
+  isAvailableToUser(state: State): boolean {
+    return true;
   }
 
   transformer(state: State): State {

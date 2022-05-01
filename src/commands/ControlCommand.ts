@@ -50,9 +50,15 @@ export class StepCommand extends ControlCommand {
   name = "step";
 
   isPossible(state: State): boolean {
-    // FIXME: it should only be possible to click the "Step" button in "Stopped",
-    // BUT, it is also possible to take a step, when the state is "Running".
     return state.status === 'Stopped' || state.status == 'Running';
+  }
+
+  isAvailableToUser(state: State): boolean {
+    /*
+     * Even though it is possible to `step` in the 'Running' state, the
+     * `step` command is not available to the user in that state.
+     */
+    return state.status === 'Stopped';
   }
 
   transformer(state: State): State {

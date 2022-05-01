@@ -19,7 +19,7 @@ export function makeClickHandler(command: BaseCommand, state: State, setState: S
 export function CommandButton(props: CommandButtonProps) {
   const [state, setState] = React.useContext(StoreContext);
   const onClick = makeClickHandler(props.command, state, setState);
-  const disabled = !props.command.isPossible(state);
+  const disabled = (!props.command.isPossible(state)) || (!props.command.isAvailableToUser(state));
   return (
     <button className="command-button" disabled={disabled} onClick={onClick}>
       {props.label}
