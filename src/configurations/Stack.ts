@@ -33,3 +33,7 @@ export function pop(s: Stack): Stack | null {
     contents: s.contents.slice(0, -1)
   };
 }
+
+export function mapStack(s: Stack, f: (s: string, index: number) => any): any {
+  return s.contents.map(f);
+}

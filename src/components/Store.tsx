@@ -2,16 +2,13 @@ import * as React from "react";
 
 import { State, SetStateType } from "../state";
 import { Configuration } from "../configurations/Configuration";
-import { Stack } from "../configurations/Stack";
+import { newStack } from "../configurations/Stack";
 
-const defaultConfiguration: Stack = {
-  type: "stack",
-  contents: []
-};
+/* Just need some dummy state here. */
 const defaultState: State = {
   status: 'Stopped',
   initial: "",
-  configuration: defaultConfiguration,
+  configuration: newStack([]),
   intervalId: null,
   issuedCommands: []
 };

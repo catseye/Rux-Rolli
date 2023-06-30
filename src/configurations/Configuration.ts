@@ -18,4 +18,12 @@ export function newComposite(contents: Array<Configuration>) : Composite {
   };
 }
 
+export function getChildren(c: Composite): Array<Configuration> {
+  return c.contents;
+}
+
+export function mapComposite(c: Composite, f: (x: Configuration, index: number) => any): any {
+  return c.contents.map(f);
+}
+
 export type Configuration = Text | Playfield | Stack | Composite;
