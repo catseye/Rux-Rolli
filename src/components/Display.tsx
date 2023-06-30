@@ -3,7 +3,7 @@ import * as React from "react";
 import { Configuration } from "../configurations/Configuration";
 
 interface DisplayProps {
-  configuration: Configuration;
+  configuration: Configuration | null;
 }
 
 export function Display(props: DisplayProps) {
