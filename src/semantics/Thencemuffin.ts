@@ -1,6 +1,6 @@
 import { Configuration, Composite } from "../configurations/Configuration";
 import { Text, moveCursor } from "../configurations/Text";
-import { Stack, push, pop } from "../configurations/Stack";
+import { Stack, newStack, push, pop } from "../configurations/Stack";
 import { Semantics } from "../semantics";
 
 /*
@@ -13,10 +13,7 @@ export const Thencemuffin: Semantics = {
       contents: programText,
       cursors: [0]
     };
-    const stack: Stack = {
-      type: "stack",
-      contents: []
-    }
+    const stack = newStack([]);
     const composite: Composite = {
       type: "composite",
       contents: [text, stack]
@@ -35,9 +32,10 @@ export const Thencemuffin: Semantics = {
       }
       let char = text2.contents.charAt(text2.cursors[0]);
       const stack: Stack = configuration.contents[1];
-      let stack2: Stack, elem: string;
+      let stack2: Stack;
       if (char === 'S') {
-        [stack2, elem] = pop(stack);
+        const stack3 = pop(stack);
+        stack2 = stack3 !== null ? stack3 : stack;
       } else {
         stack2 = push(stack, "A");
       }
