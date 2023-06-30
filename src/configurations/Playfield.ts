@@ -14,6 +14,7 @@ export function get(p: Playfield, x: number, y: number): string {
   return p.store[x + ',' + y];
 }
 
+/* FIXME: ahhhh this is mutable, isn't it.  We don't want it to be mutable, do we. */
 export function put(p: Playfield, x: number, y: number, v: string | undefined): void {
   const key = x + ',' + y;
   if (v === undefined) {
@@ -30,7 +31,7 @@ export function getExtents(p: Playfield): [number, number, number, number] {
   let maxX: number = 0;
   let maxY: number = 0;
 
-  for (var cell in this.store) {
+  for (var cell in p.store) {
       var pos = cell.split(',');
       var x = parseInt(pos[0], 10);
       var y = parseInt(pos[1], 10);
@@ -42,7 +43,7 @@ export function getExtents(p: Playfield): [number, number, number, number] {
   }
 
   if (count === 0) {
-    return [0, 0, 0, 0];
+    return [0, 0, -1, -1];
   } else {
     return [minX, minY, maxX, maxY];
   }
@@ -54,7 +55,7 @@ export function dump(p: Playfield): string {
   for (var y = minY; y <= maxY; y++) {
       var row = "";
       for (var x = minX; x <= maxX; x++) {
-          row += this.get(x, y);
+          row += get(p, x, y);
       }
       text += row + "\n";
   }

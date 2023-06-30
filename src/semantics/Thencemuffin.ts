@@ -1,6 +1,7 @@
 import { Configuration, newComposite, getChildren } from "../configurations/Configuration";
 import { Text, newText, getString, getCursors, moveCursor } from "../configurations/Text";
 import { Stack, newStack, push, pop } from "../configurations/Stack";
+import { Playfield, newPlayfield, get, put } from "../configurations/Playfield";
 import { Semantics } from "../semantics";
 
 /*
@@ -8,8 +9,11 @@ import { Semantics } from "../semantics";
  */
 export const Thencemuffin: Semantics = {
   load: function(programText: string): Configuration {
+    let pf = newPlayfield();
+    put(pf, 0, 0, "X");
     return newComposite([
       newText(programText, [0]),
+      pf,
       newStack([])
     ]);
   },
@@ -17,22 +21,27 @@ export const Thencemuffin: Semantics = {
     if (configuration.type !== 'composite') return null;
     const children = getChildren(configuration);
     if (children[0].type !== 'text') return null;
-    if (children[1].type !== 'stack') return null;
     const text: Text = children[0];
-    let text2 = moveCursor(text, 0, 1);
-    if (text2.cursors[0] >= getString(text2).length) {
-      return null;
-    }
-    let char = getString(text2).charAt(getCursors(text2)[0]);
-    const stack: Stack = children[1];
-    let stack2: Stack;
+    if (children[1].type !== 'playfield') return null;
+    const pf: Playfield = children[1];
+    if (children[2].type !== 'stack') return null;
+    const stack: Stack = children[2];
+
+    let newText = moveCursor(text, 0, 1);
+    let cursorPos = getCursors(newText)[0];
+    if (cursorPos >= getString(newText).length) return null;
+    let char = getString(newText).charAt(cursorPos);
+
+    let newStack: Stack;
     if (char === 'S') {
-      const stack3 = pop(stack);
-      stack2 = stack3 !== null ? stack3 : stack;
+      const tmp = pop(stack);
+      newStack = tmp !== null ? tmp : stack;
     } else {
-      stack2 = push(stack, "A");
+      newStack = push(stack, "A");
     }
-    return newComposite([text2, stack2]);
+    const newPf = newPlayfield();
+    put(newPf, 1, 0, char);
+    return newComposite([newText, newPf, newStack]);
   }
 }
   
