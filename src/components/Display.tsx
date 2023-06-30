@@ -3,16 +3,11 @@ import * as React from "react";
 import { Configuration } from "../configurations/Configuration";
 
 interface DisplayProps {
-  configuration: Configuration | null;
+  configuration: Configuration;
 }
 
 export function Display(props: DisplayProps) {
-  if (!props.configuration) {
-    // TODO This is less than ideal.  We probably want to
-    // display the state in which it halted instead.
-    // Such would require a different way of signalling halted.
-    return <div>Game Over</div>;
-  } else if (props.configuration.type === "text") {
+  if (props.configuration.type === "text") {
     return (
       <div className="display-text">
         <pre>{ props.configuration.contents }</pre>

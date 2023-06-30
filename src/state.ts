@@ -4,7 +4,7 @@ import { Configuration } from "./configurations/Configuration";
 export interface State {
   status: 'Editing' | 'Stopped' | 'Running' | 'Terminated';
   initial: string;
-  configuration: Configuration | null;
+  configuration: Configuration;
   intervalId: any;  // TODO "NodeJS.Timeout"
   issuedCommands: Array<BaseCommand>;
 }

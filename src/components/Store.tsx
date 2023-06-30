@@ -2,11 +2,16 @@ import * as React from "react";
 
 import { State, SetStateType } from "../state";
 import { Configuration } from "../configurations/Configuration";
+import { Stack } from "../configurations/Stack";
 
+const defaultConfiguration: Stack = {
+  type: "stack",
+  contents: []
+};
 const defaultState: State = {
   status: 'Stopped',
   initial: "",
-  configuration: null,
+  configuration: defaultConfiguration,
   intervalId: null,
   issuedCommands: []
 };

@@ -64,11 +64,16 @@ export class StepCommand extends ControlCommand {
   transformer(state: State): State {
     const next = this.next.bind(this);
     const configuration = next(state.configuration);
-    const status = configuration === null ? 'Terminated' : state.status;
-    return {
-      ...state,
-      status: status,
-      configuration: configuration
+    if (configuration === null) {
+      return {
+        ...state,
+        status: 'Terminated',
+      }
+    } else {
+      return {
+        ...state,
+        configuration: configuration
+      }
     }
   }
 
