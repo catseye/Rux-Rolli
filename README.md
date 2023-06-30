@@ -9,7 +9,7 @@ a work in progress.
 
 ### Quick start
 
-Install node and npm (use nvm).  Clone this repo.  `cd` into this
+Install node (v16) and npm (use [nvm][]).  Clone this repo.  `cd` into this
 repo directory.  Run `npm install`.  Run `npm run build:App`.
 Open `dist/demo.html` in your favourite web browser.
 
@@ -52,3 +52,4 @@ of these, see the [Architecture](doc/Architecture.md) document.
 [yoob]: https://catseye.tc/node/yoob
 [yoob.js]: https://catseye.tc/node/yoob.js
 [tsify]: https://github.com/TypeStrong/tsify
+[nvm]: https://github.com/nvm-sh/nvm
