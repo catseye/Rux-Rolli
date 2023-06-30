@@ -12,6 +12,14 @@ export function newText(contents: string, cursors: Array<number>): Text {
   };
 }
 
+export function getString(t: Text): string {
+  return t.contents;
+}
+
+export function getCursors(t: Text): Array<number> {
+  return t.cursors;
+}
+
 export function moveCursor(t: Text, index: number, delta: number): Text {
   let newCursors = t.cursors.slice();
   newCursors[index] += delta;
@@ -21,5 +29,3 @@ export function moveCursor(t: Text, index: number, delta: number): Text {
     cursors: newCursors
   };
 }
-
-// TODO: more operations on texts here

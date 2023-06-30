@@ -1,6 +1,6 @@
 import { Semantics } from "../semantics";
 import { Configuration } from "../configurations/Configuration";
-import { newText } from "../configurations/Text";
+import { newText, getString, getCursors } from "../configurations/Text";
 
 /*
  * Hencemuffin: an inexcusably trivial esolang
@@ -10,14 +10,7 @@ export const Hencemuffin: Semantics = {
     return newText(programText, []);
   },
   next: function(configuration: Configuration) {
-    if (configuration.type === "text") {
-      return {
-        type: "text",
-        contents: configuration.contents + "A",
-        cursors: []
-      };
-    } else {
-      return null;
-    }
+    if (configuration.type !== "text") return null;
+    return newText(getString(configuration) + "A", getCursors(configuration));
   }
 }

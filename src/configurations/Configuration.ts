@@ -11,4 +11,11 @@ export interface Composite {
   contents: Array<Configuration>;
 }
 
+export function newComposite(contents: Array<Configuration>) : Composite {
+  return {
+    type: 'composite',
+    contents: contents
+  };
+}
+
 export type Configuration = Text | Playfield | Stack | Composite;
