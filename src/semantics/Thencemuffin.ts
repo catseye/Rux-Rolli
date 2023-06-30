@@ -9,11 +9,9 @@ import { Semantics } from "../semantics";
  */
 export const Thencemuffin: Semantics = {
   load: function(programText: string): Configuration {
-    let pf = newPlayfield();
-    put(pf, 0, 0, "X");
     return newComposite([
       newText(programText, [0]),
-      pf,
+      put(newPlayfield(), 0, 0, "X"),
       newStack([])
     ]);
   },
@@ -39,8 +37,7 @@ export const Thencemuffin: Semantics = {
     } else {
       newStack = push(stack, "A");
     }
-    const newPf = newPlayfield();
-    put(newPf, 1, 0, char);
+    const newPf = put(pf, 2, 0, char);
     return newComposite([newText, newPf, newStack]);
   }
 }

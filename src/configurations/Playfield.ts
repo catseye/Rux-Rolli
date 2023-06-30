@@ -1,26 +1,28 @@
+import { Map, List } from "immutable";
+
 export interface Playfield {
   type: 'playfield';
-  store: Object;
+  store: Map<List<number>, string>;
+  def: string;
 }
 
 export function newPlayfield(): Playfield {
   return {
     type: 'playfield',
-    store: {},
+    store: Map(),
+    def: " "
   }
 }
 
 export function get(p: Playfield, x: number, y: number): string {
-  return p.store[x + ',' + y];
+  return p.store.get(List([x, y])) || p.def;
 }
 
-/* FIXME: ahhhh this is mutable, isn't it.  We don't want it to be mutable, do we. */
-export function put(p: Playfield, x: number, y: number, v: string | undefined): void {
-  const key = x + ',' + y;
-  if (v === undefined) {
-    delete p.store[key];
-  } else {
-    p.store[key] = v;
+export function put(p: Playfield, x: number, y: number, v: string): Playfield {
+  return {
+    type: 'playfield',
+    store: p.store.set(List([x, y]), v),
+    def: p.def
   }
 }
 
@@ -31,16 +33,17 @@ export function getExtents(p: Playfield): [number, number, number, number] {
   let maxX: number = 0;
   let maxY: number = 0;
 
-  for (var cell in p.store) {
-      var pos = cell.split(',');
-      var x = parseInt(pos[0], 10);
-      var y = parseInt(pos[1], 10);
+  p.store.keySeq().map(
+    function(key) {
+      var x = key.get(0) || 0;
+      var y = key.get(1) || 0;
       if (count === 0 || x < minX) minX = x;
       if (count === 0 || x > maxX) maxX = x;
       if (count === 0 || y < minY) minY = y;
       if (count === 0 || y > maxY) maxY = y;
       count++;
-  }
+    }
+  )
 
   if (count === 0) {
     return [0, 0, -1, -1];
