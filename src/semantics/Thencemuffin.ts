@@ -23,7 +23,7 @@ export const Thencemuffin: Semantics = {
     };
     return composite;
   },
-  next: function(configuration: Configuration): Configuration {
+  next: function(configuration: Configuration): Configuration | null {
     if (configuration === null) return null;
     if (configuration.type === 'composite' &&
         configuration.contents[0].type === 'text' &&
