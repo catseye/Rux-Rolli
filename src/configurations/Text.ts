@@ -4,6 +4,14 @@ export interface Text {
   cursors: Array<number>;
 }
 
+export function newText(contents: string, cursors: Array<number>): Text {
+  return {
+    type: "text",
+    contents: contents,
+    cursors: cursors
+  };
+}
+
 export function moveCursor(t: Text, index: number, delta: number): Text {
   let newCursors = t.cursors.slice();
   newCursors[index] += delta;
