@@ -33,8 +33,8 @@ export function getExtents(p: Playfield): [number, number, number, number] {
   let maxX: number = 0;
   let maxY: number = 0;
 
-  p.store.keySeq().map(
-    function(key) {
+  p.store.forEach(
+    function(value, key) {
       var x = key.get(0) || 0;
       var y = key.get(1) || 0;
       if (count === 0 || x < minX) minX = x;
