@@ -4,7 +4,7 @@
   "scripts": {
     "build:App": "browserify src/App.tsx -p [ tsify --jsx=react-jsx ] -t [ babelify --extensions '.ts,.tsx,.js,.jsx' --presets [ @babel/preset-env @babel/preset-react @babel/preset-typescript ] ] -g [ envify --NODE_ENV development ] > dist/App.js",
     "typecheck:App": "tsc --jsx react-jsx src/**.tsx",
-    "clean:App": "rm -rf src/*.js src/components/*.js dist/*.js"
+    "clean:App": "rm -rf src/*.js src/*/*.js dist/*.js"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",
