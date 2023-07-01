@@ -62,3 +62,8 @@ of these, see the [Architecture](doc/Architecture.md) document.
 *   Input control that provides input.
 *   Configurations can have id's (for access), titles (for display).
 *   Cursors on Playfield (or CursoredPlayfield subclass or wrapper).
+*   Extent tracking on Playfield.
+*   Scrollable view of Playfield, with cursors.
+*   Implement a realer example esolang than what we have so far.
+*   Select preset esolang to load from dropdown.
+*   Add some unit tests.

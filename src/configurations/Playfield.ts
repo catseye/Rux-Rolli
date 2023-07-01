@@ -1,17 +1,32 @@
 import { Map, List } from "immutable";
 
+import { Cursor } from "./Cursor"
+
 export interface Playfield {
   type: 'playfield';
   store: Map<List<number>, string>;
   def: string;
+  cursors: Map<string, Cursor>;
 }
 
 export function newPlayfield(): Playfield {
   return {
     type: 'playfield',
     store: Map(),
-    def: " "
+    def: " ",
+    cursors: Map(),
   }
+}
+
+export function setCursor(p: Playfield, name: string, c: Cursor): Playfield {
+  return {
+    ...p,
+    cursors: p.cursors.set(name, c),
+  }
+}
+
+export function getCursor(p: Playfield, name: string): Cursor | undefined {
+  return p.cursors.get(name);
 }
 
 export function get(p: Playfield, x: number, y: number): string {
@@ -20,9 +35,8 @@ export function get(p: Playfield, x: number, y: number): string {
 
 export function put(p: Playfield, x: number, y: number, v: string): Playfield {
   return {
-    type: 'playfield',
+    ...p,
     store: p.store.set(List([x, y]), v),
-    def: p.def
   }
 }
 
