@@ -1,17 +1,26 @@
 import { State, SetStateType } from "../state";
 
 import { BaseCommand } from "./BaseCommand";
-import { Semantics, LoadFunction, NextFunction } from "../semantics"
+import { Semantics, Action, LoadFunction, NextFunction, RecvFunction } from "../semantics"
+import { Configuration } from "../configurations/Configuration";
+
+
+/* STUB */
+function getAvailableInput(): string | null {
+  return "g";
+}
 
 
 class ControlCommand extends BaseCommand {
   load: LoadFunction;
   next: NextFunction;
+  recv: RecvFunction;
 
-  constructor(load: LoadFunction, next: NextFunction) {
+  constructor(load: LoadFunction, next: NextFunction, recv: RecvFunction) {
     super();
     this.load = load;
     this.next = next;
+    this.recv = recv;
   }
 }
 
@@ -62,17 +71,33 @@ export class StepCommand extends ControlCommand {
   }
 
   transformer(state: State): State {
-    const next = this.next.bind(this);
-    const configuration = next(state.configuration);
-    if (configuration === null) {
-      return {
-        ...state,
-        status: 'Terminated',
-      }
-    } else {
+    const next: NextFunction = this.next.bind(this);
+    const [action, configuration] = next(state.configuration);
+    return this.handleAction(state, action, configuration);
+  }
+
+  handleAction(state: State, action: Action, configuration: Configuration): State {
+    if (action === 'next') {
       return {
         ...state,
         configuration: configuration
+      }
+    } else if (action === 'input') {
+      let char: string | null = getAvailableInput();
+      if (char === null) {
+        return {
+          ...state,
+          status: 'WaitingForInput',
+        }
+      } else {
+        const recv: RecvFunction = this.recv.bind(this);
+        const [action, configuration] = recv(state.configuration, char);
+        return this.handleAction(state, action, configuration);
+      }
+    } else { // action === 'halt'
+      return {
+        ...state,
+        status: 'Terminated',
       }
     }
   }
@@ -119,7 +144,7 @@ export class RunCommand extends ControlCommand {
   effect(state: State, setState: SetStateType): void {
     // Immediately after transitioning to 'Running' state, take
     // a step (which will, in this state, trigger subsequent steps).
-    (new StepCommand(this.load, this.next)).enact(state, setState);
+    (new StepCommand(this.load, this.next, this.recv)).enact(state, setState);
   }
 }
 
@@ -176,12 +201,13 @@ export interface ControlCommands {
 export function createCommandsFromSemantics(semantics: Semantics): ControlCommands {
   const load = semantics.load;
   const next = semantics.next;
+  const recv = semantics.recv;
   return {
-    edit: new EditCommand(load, next),
-    doneEditing: new DoneEditingCommand(load, next),
-    run: new RunCommand(load, next),
-    stop: new StopCommand(load, next),
-    step: new StepCommand(load, next),
-    reset: new ResetCommand(load, next)
+    edit: new EditCommand(load, next, recv),
+    doneEditing: new DoneEditingCommand(load, next, recv),
+    run: new RunCommand(load, next, recv),
+    stop: new StopCommand(load, next, recv),
+    step: new StepCommand(load, next, recv),
+    reset: new ResetCommand(load, next, recv)
   };
 }

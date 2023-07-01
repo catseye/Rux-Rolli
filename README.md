@@ -42,8 +42,8 @@ of these, see the [Architecture](doc/Architecture.md) document.
 
 *   **Purely Functional Small-Step Operational Semantics**
     -- each esolang or other computational animation
-    defined within Rux Rolli is defined by a pair of pure
-    functions, `load` and `next`.
+    defined within Rux Rolli is defined by a triple of pure
+    functions: `load`, `next`, and `recv`.
 
 *   **Self-Describing Configurations** describe the
     instantaneous state of the system, and describe not
@@ -53,3 +53,12 @@ of these, see the [Architecture](doc/Architecture.md) document.
 [yoob.js]: https://catseye.tc/node/yoob.js
 [tsify]: https://github.com/TypeStrong/tsify
 [nvm]: https://github.com/nvm-sh/nvm
+
+### TODO
+
+*   Convert other configurations to use Immutable.js data structures.
+*   Add a production build to reduce bundle size.
+*   Work out how waiting for input will work.
+*   Input control that provides input.
+*   Configurations can have id's (for access), titles (for display).
+*   Cursors on Playfield (or CursoredPlayfield subclass or wrapper).

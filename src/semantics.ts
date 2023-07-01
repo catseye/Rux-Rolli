@@ -6,14 +6,14 @@ import { Configuration } from "./configurations/Configuration";
  */
 export type LoadFunction = (programText: string) => Configuration;
 
-/*
- * NextFunction may return `null` to signal that the execution of the
- * program has halted.  The state will be put into the `Terminated` status
- * to indicate this.
- */
-export type NextFunction = (configuration: Configuration) => Configuration | null;
+export type Action = 'next' | 'halt' | 'input';
+
+export type NextFunction = (configuration: Configuration) => [Action, Configuration];
+
+export type RecvFunction = (configuration: Configuration, input: string) => [Action, Configuration];
 
 export interface Semantics {
     load: LoadFunction;
     next: NextFunction;
+    recv: RecvFunction;
 };

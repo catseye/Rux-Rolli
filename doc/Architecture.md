@@ -43,12 +43,14 @@ a number of pure functions, which the `Command` objects apply
 as part of their state transformation.  These functions
 include:
 
-*   `load`: transform the program text into the initial
+*   **`load`**: transform the program text into the initial
     configuration
-*   `step`: given a configuration, return the configuration
-    that immediately follows it, or `null` if there is none
-
-(possibly others too, but those are the main ones.)
+*   **`step`**: given a configuration, return the configuration
+    that immediately follows it, or a signal an action
+    that is to take place next (`halt` or `input`)
+*   **`recv`**: given a configuration and a character that
+    was just input, return the configuration that follows
+    or action to take place next (`halt` or `input`)
 
 "Configuration" is the word we use for an instantaneous
 description of the program state.

@@ -10,7 +10,10 @@ export const Hencemuffin: Semantics = {
     return newText(programText, []);
   },
   next: function(configuration: Configuration) {
-    if (configuration.type !== "text") return null;
-    return newText(getString(configuration) + "A", getCursors(configuration));
+    if (configuration.type !== "text") return ['halt', configuration];
+    return ['next', newText(getString(configuration) + "A", getCursors(configuration))];
+  },
+  recv: function(configuration: Configuration, input: string) {
+    return ['next', configuration];
   }
 }

@@ -2,7 +2,7 @@ import { BaseCommand } from "./commands/BaseCommand";
 import { Configuration } from "./configurations/Configuration";
 
 export interface State {
-  status: 'Editing' | 'Stopped' | 'Running' | 'Terminated';
+  status: 'Editing' | 'Stopped' | 'Running' | 'WaitingForInput' | 'Terminated';
   initial: string;
   configuration: Configuration;
   intervalId: any;  // TODO "NodeJS.Timeout"

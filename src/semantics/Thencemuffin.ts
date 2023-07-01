@@ -15,19 +15,19 @@ export const Thencemuffin: Semantics = {
       newStack([])
     ]);
   },
-  next: function(configuration: Configuration): Configuration | null {
-    if (configuration.type !== 'composite') return null;
+  next: function(configuration: Configuration) {
+    if (configuration.type !== 'composite') return ['halt', configuration];
     const children = getChildren(configuration);
-    if (children[0].type !== 'text') return null;
+    if (children[0].type !== 'text') return ['halt', configuration];
     const text: Text = children[0];
-    if (children[1].type !== 'playfield') return null;
+    if (children[1].type !== 'playfield') return ['halt', configuration];
     const pf: Playfield = children[1];
-    if (children[2].type !== 'stack') return null;
+    if (children[2].type !== 'stack') return ['halt', configuration];
     const stack: Stack = children[2];
 
     let newText = moveCursor(text, 0, 1);
     let cursorPos = getCursors(newText)[0];
-    if (cursorPos >= getString(newText).length) return null;
+    if (cursorPos >= getString(newText).length) return ['halt', configuration];
     let char = getString(newText).charAt(cursorPos);
 
     let newStack: Stack;
@@ -37,8 +37,11 @@ export const Thencemuffin: Semantics = {
     } else {
       newStack = push(stack, "A");
     }
-    const newPf = put(pf, 2, 0, char);
-    return newComposite([newText, newPf, newStack]);
+    const newPf = put(pf, 2, 1, char);
+    return ['next', newComposite([newText, newPf, newStack])];
+  },
+  recv: function(configuration: Configuration, input: string) {
+    return ['next', configuration];
   }
 }
   
