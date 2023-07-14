@@ -1,7 +1,8 @@
 import { Configuration, mapComposite } from "../configurations/Configuration";
-import { getString, getCursors } from "../configurations/Text";
 import { mapStack } from "../configurations/Stack";
 import { dumpWithinExtents } from "../configurations/Playfield";
+
+import { DisplayText } from "./DisplayText";
 
 interface DisplayProps {
   configuration: Configuration;
@@ -17,15 +18,6 @@ export function Display(props: DisplayProps) {
   } else if (props.configuration.type === "composite") {
     return <DisplayComposite composite={props.configuration} />;
   }
-}
-
-export function DisplayText(props: any) {
-  return (
-    <div className="display-text">
-      <pre>{ getString(props.text) }</pre>
-      <div>{ getCursors(props.text) }</div>
-    </div>
-  );
 }
 
 export function DisplayStack(props: any) {
