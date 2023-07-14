@@ -1,13 +1,14 @@
-import { Text, mapText } from "../configurations/Text";
+import { Text, mapText } from "../../configurations/Text";
 
-interface DisplayTextProps {
+interface TextViewProps {
   text: Text;
 }
 
-export function DisplayText(props: DisplayTextProps) {
+export function TextView(props: TextViewProps) {
+  // TODO key={index}, index in mapText!
   return (
     <div className="display-text">
-      { mapText(props.text, (char, cursors) => <DisplayCell char={char} cursors={cursors} />) }
+      { mapText(props.text, (char: String, cursors: Array<number>) => <DisplayCell char={char} cursors={cursors} />) }
     </div>
   );
 }

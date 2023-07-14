@@ -13,7 +13,7 @@ Install node (v16) and npm (use [nvm][]).  Clone this repo.  `cd` into this
 repo directory.  Run `npm install`.
 
 The framework is written in TypeScript and the build system uses
-Vite with SWC.  Run `npm run dev` to run a development server.
+[Vite][] with SWC.  Run `npm run dev` to run a development server.
 
 To try the production build, run `npm run build`.  Then start a
 local web server in the `dist` directory, e.g.
@@ -60,6 +60,7 @@ of these, see the [Architecture](doc/Architecture.md) document.
 [yoob.js]: https://catseye.tc/node/yoob.js
 [tsify]: https://github.com/TypeStrong/tsify
 [nvm]: https://github.com/nvm-sh/nvm
+[Vite]: https://vitejs.dev/
 
 ### TODO
 

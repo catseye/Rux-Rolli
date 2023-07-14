@@ -8,7 +8,7 @@ import { State } from "../state";
 import { StoreContext } from "./Store";
 import { CommandButton } from "./CommandButton";
 import { Editor } from "./Editor";
-import { Display } from "./Display";
+import { ConfigurationView } from "./view/View";
 
 interface MainStageProps {
   commands: ControlCommands;
@@ -35,7 +35,7 @@ export function MainStage(props: MainStageProps) {
       <div>
         {state.status === 'Editing' ?
           <Editor onChange={onEditorChange} programText={ state.initial } /> :
-          <Display configuration={ state.configuration } />
+          <ConfigurationView configuration={ state.configuration } />
         }
         <p>{ state.status }</p>
       </div>

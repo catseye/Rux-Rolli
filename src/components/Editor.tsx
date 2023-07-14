@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { ChangeEventHandler } from "react";
 
 interface EditorProps {
