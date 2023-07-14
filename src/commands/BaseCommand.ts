@@ -1,7 +1,7 @@
 import { State, SetStateType } from "../state";
 
 export class BaseCommand {
-  name: string;
+  name = "unnamed"
 
   enact(state: State, setState: SetStateType): void {
     if (this.isPossible(state)) {

@@ -1,31 +1,29 @@
 {
   "name": "rux-rolli",
-  "version": "0.1.0",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "build:App": "browserify src/App.tsx -p [ tsify --jsx=react-jsx ] -t [ babelify --extensions '.ts,.tsx,.js,.jsx' --presets [ @babel/preset-env @babel/preset-react @babel/preset-typescript ] ] -g [ envify --NODE_ENV development ] > dist/App.js",
-    "typecheck:App": "tsc --jsx react-jsx src/**.tsx",
-    "clean:App": "rm -rf src/*.js src/*/*.js dist/*.js"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.5.4",
-    "@babel/preset-env": "^7.5.4",
-    "@babel/preset-react": "^7.16.7",
-    "@babel/preset-typescript": "^7.16.7",
-    "@types/node": "^16.6.2",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    "babelify": "^10.0.0",
-    "browserify": "^16.3.0",
-    "envify": "^4.1.0",
-    "terser": "^4.1.2",
-    "tsify": "^5.0.4",
-    "typescript": "^4.5.5",
-    "uglify-js": "^3.6.0",
-    "@browserify/uglifyify": "^6.0.0"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
   },
   "dependencies": {
     "immutable": "^4.3.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "eslint": "^8.44.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.1",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.0"
   }
 }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+// import * as ReactDOM from "react-dom";
 
 import { StoreContext, initializeStore } from "./components/Store";
 import { createCommandsFromSemantics } from "./commands/ControlCommand";
@@ -60,5 +60,6 @@ function App(props: any) {
 }
 // ========================================
   
-ReactDOM.render(<App />, document.getElementById("root"));
+// ReactDOM.render(<App />, document.getElementById("root"));
   
+export default App
