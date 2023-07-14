@@ -7,17 +7,11 @@ interface StackViewProps {
 export function StackView(props: StackViewProps) {
   return (
     <div className="display-stack">
-      { mapStack(props.stack, (s, index) => <span key={index}>{s}</span>) }
+      { mapStack(props.stack, (s, index) => <DisplayCell key={index} contents={s} />) }
     </div>
   );
 }
 
-/*
 export function DisplayCell(props: any) {
-    const char = props.char;
-    const cursors = props.cursors;
-    return (
-        (cursors.length) ? ( <span style={{backgroundColor: "blue"}}>{ char }</span> ) : ( <span>{ char }</span> )
-    )
+  return <span>{props.contents}</span>;
 }
-*/

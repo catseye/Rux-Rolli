@@ -82,3 +82,23 @@ export function dumpWithinExtents(p: Playfield, minX: number, minY: number, maxX
   }
   return text;
 };
+
+export function mapPlayfieldRows(p: Playfield, f: (y: number) => any): any {
+  let [_minX, minY, _maxX, maxY] = getExtents(p);
+  let results = [];
+  for (var y = minY; y <= maxY; y++) {
+    results.push(f(y));
+  }
+  return results;
+}
+
+export function mapPlayfieldCells(p: Playfield, y: number, f: (x: number, contents: String, cursors: Array<Cursor>) => any): any {
+  let [minX, _minY, maxX, _maxY] = getExtents(p);
+  let results = [];
+  var contents;
+  for (var x = minX; x <= maxX; x++) {
+    contents = get(p, x, y);
+    results.push(f(x, contents, []))
+  }
+  return results;
+}
