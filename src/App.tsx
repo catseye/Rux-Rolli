@@ -1,16 +1,13 @@
 import * as React from "react";
-// import * as ReactDOM from "react-dom";
 
 import { StoreContext, initializeStore } from "./components/Store";
 import { createCommandsFromSemantics } from "./commands/ControlCommand";
 import { Semantics } from "./semantics";
-import { Hencemuffin } from "./semantics/Hencemuffin";
 import { Thencemuffin } from "./semantics/Thencemuffin";
 import { MainStage } from "./components/MainStage";
 import { State } from "./state";
 
 const allSemantics = {
-  Hencemuffin: Hencemuffin,
   Thencemuffin: Thencemuffin
 };
 
@@ -53,13 +50,10 @@ function SemanticsContainer(props: SemanticsContainerProps) {
 function App(props: any) {
   return (
     <div>
-      <SemanticsContainer semantics={allSemantics.Hencemuffin} />
+      <h1>Thencemuffin</h1>
       <SemanticsContainer semantics={allSemantics.Thencemuffin} />
     </div>
   )
 }
-// ========================================
-  
-// ReactDOM.render(<App />, document.getElementById("root"));
   
 export default App
