@@ -1,5 +1,5 @@
 import { Configuration, newComposite, getChildren } from "../configurations/Configuration";
-import { Text, newText, getString, getCursors, moveCursor } from "../configurations/Text";
+import { Text, newText, newRange, getString, getCursors, moveCursor } from "../configurations/Text";
 import { Stack, newStack, push, pop } from "../configurations/Stack";
 import { Playfield, newPlayfield, get, put } from "../configurations/Playfield";
 import { Semantics } from "../semantics";
@@ -10,7 +10,7 @@ import { Semantics } from "../semantics";
 export const Thencemuffin: Semantics = {
   load: function(programText: string): Configuration {
     return newComposite([
-      newText(programText, [0]),
+      newText(programText, [newRange(0, 1)]),
       put(newPlayfield(), 0, 0, "X"),
       newStack([])
     ]);
@@ -26,9 +26,9 @@ export const Thencemuffin: Semantics = {
     const stack: Stack = children[2];
 
     let newText = moveCursor(text, 0, 1);
-    let cursorPos = getCursors(newText)[0];
-    if (cursorPos >= getString(newText).length) return ['halt', configuration];
-    let char = getString(newText).charAt(cursorPos);
+    let cursor = getCursors(newText)[0];
+    if (cursor.index >= getString(newText).length) return ['halt', configuration];
+    let char = getString(newText).charAt(cursor.index);
 
     let newStack: Stack;
     if (char === 'S') {
@@ -40,7 +40,7 @@ export const Thencemuffin: Semantics = {
     const newPf = put(pf, 2, 1, char);
     return ['next', newComposite([newText, newPf, newStack])];
   },
-  recv: function(configuration: Configuration, input: string) {
+  recv: function(configuration: Configuration, _input: string) {
     return ['next', configuration];
   }
 }
