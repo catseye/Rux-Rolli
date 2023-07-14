@@ -63,14 +63,24 @@ of these, see the [Architecture](doc/Architecture.md) document.
 
 ### TODO
 
-*   Convert other configurations to use Immutable.js data structures.
-*   Add a production build to reduce bundle size.
+#### Input
+
 *   Work out how waiting for input will work.
 *   Input control that provides input.
+
+#### Configurations
+
 *   Configurations can have id's (for access), titles (for display).
 *   Cursors on Playfield (or CursoredPlayfield subclass or wrapper).
 *   Extent tracking on Playfield.
 *   Scrollable view of Playfield, with cursors.
+
+#### Language
+
 *   Implement a realer example esolang than what we have so far.
-*   Select preset esolang to load from dropdown.
+*   Select preset examples to load from dropdown.
+
+#### Other
+
+*   Convert other configurations to use Immutable.js data structures.
 *   Add some unit tests.

@@ -1,9 +1,7 @@
-import * as React from "react";
-
 import { Configuration, mapComposite } from "../configurations/Configuration";
 import { getString, getCursors } from "../configurations/Text";
 import { mapStack } from "../configurations/Stack";
-import { dump } from "../configurations/Playfield";
+import { dumpWithinExtents } from "../configurations/Playfield";
 
 interface DisplayProps {
   configuration: Configuration;
@@ -11,33 +9,45 @@ interface DisplayProps {
 
 export function Display(props: DisplayProps) {
   if (props.configuration.type === "text") {
-    const text = props.configuration;
-    return (
-      <div className="display-text">
-        <pre>{ getString(text) }</pre>
-        <div>{ getCursors(text) }</div>
-      </div>
-    );
+    return <DisplayText text={props.configuration} />;
   } else if (props.configuration.type === "stack") {
-    const stack = props.configuration;
-    return (
-      <div className="display-stack">
-        { mapStack(stack, (s, index) => <span key={index}>{s}</span>) }
-      </div>
-    );
+    return <DisplayStack stack={props.configuration} />;
   } else if (props.configuration.type === "playfield") {
-    const playfield = props.configuration;
-    return (
-      <div className="display-playfield">
-        { dump(playfield) }
-      </div>
-    );
+    return <DisplayPlayfield playfield={props.configuration} />;
   } else if (props.configuration.type === "composite") {
-    const composite = props.configuration;
-    return (
-      <div className="display-composite">
-        { mapComposite(composite, (c, index) => <Display key={index} configuration={c} />) }
-      </div>
-    );
+    return <DisplayComposite composite={props.configuration} />;
   }
+}
+
+export function DisplayText(props: any) {
+  return (
+    <div className="display-text">
+      <pre>{ getString(props.text) }</pre>
+      <div>{ getCursors(props.text) }</div>
+    </div>
+  );
+}
+
+export function DisplayStack(props: any) {
+  return (
+    <div className="display-stack">
+      { mapStack(props.stack, (s, index) => <span key={index}>{s}</span>) }
+    </div>
+  );
+}
+
+export function DisplayPlayfield(props: any) {
+  return (
+    <div className="display-playfield">
+      { dumpWithinExtents(props.playfield, 0, 0, 10, 10) }
+    </div>
+  );
+}
+
+export function DisplayComposite(props: any) {
+  return (
+    <div className="display-composite">
+      { mapComposite(props.composite, (c, index) => <Display key={index} configuration={c} />) }
+    </div>
+  );
 }

@@ -48,7 +48,7 @@ export function getExtents(p: Playfield): [number, number, number, number] {
   let maxY: number = 0;
 
   p.store.forEach(
-    function(value, key) {
+    function(_value: string, key: List<number>) {
       var x = key.get(0) || 0;
       var y = key.get(1) || 0;
       if (count === 0 || x < minX) minX = x;
@@ -67,8 +67,12 @@ export function getExtents(p: Playfield): [number, number, number, number] {
 }
 
 export function dump(p: Playfield): string {
-  let text = "";
   let [minX, minY, maxX, maxY] = getExtents(p);
+  return dumpWithinExtents(p, minX, minY, maxX, maxY);
+};
+
+export function dumpWithinExtents(p: Playfield, minX: number, minY: number, maxX: number, maxY: number): string {
+  let text = "";
   for (var y = minY; y <= maxY; y++) {
       var row = "";
       for (var x = minX; x <= maxX; x++) {
