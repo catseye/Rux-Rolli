@@ -10,8 +10,15 @@ a work in progress.
 ### Quick start
 
 Install node (v16) and npm (use [nvm][]).  Clone this repo.  `cd` into this
-repo directory.  Run `npm install`.  Run `npm run build:App`.
-Open `dist/demo.html` in your favourite web browser.
+repo directory.  Run `npm install`.
+
+The framework is written in TypeScript and the build system uses
+Vite with SWC.  Run `npm run dev` to run a development server.
+
+To try the production build, run `npm run build`.  Then start a
+local web server in the `dist` directory, e.g.
+`cd src && python3 -m http.server` and go to `http://localhost:8000/`
+in your favourite web browser.
 
 ### Background
 
