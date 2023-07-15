@@ -5,8 +5,6 @@ Rux Rolli
 interpreters and other computational animations.  It is currently
 a work in progress.
 
-![state machine diagram for Rux Rolli](images/state-machine-diagram.png?raw=true)
-
 ### Quick start
 
 Install node (v16) and npm (use [nvm][]).  Clone this repo.  `cd` into this
@@ -56,6 +54,8 @@ of these, see the [Architecture](doc/Architecture.md) document.
     instantaneous state of the system, and describe not
     only what should be displayed in the UI, but how.
 
+![state machine diagram for Rux Rolli](images/state-machine-diagram.png?raw=true)
+
 [yoob]: https://catseye.tc/node/yoob
 [yoob.js]: https://catseye.tc/node/yoob.js
 [tsify]: https://github.com/TypeStrong/tsify
@@ -69,12 +69,12 @@ of these, see the [Architecture](doc/Architecture.md) document.
 *   Work out how waiting for input will work.
 *   Input control that provides input.
 
-#### Configurations
+#### Playfields
 
-*   Configurations can have id's (for access), titles (for display).
+*   Load multi-line string into Playfield.
 *   Extent on Playfield should include cursors.
 *   Extent on Playfield should be pinnable by view.
-*   Extent tracking on Playfield.
+*   Extent tracking on Playfield (only update when modified).
 *   Scrollable view of Playfield.
 
 #### Language
@@ -85,5 +85,7 @@ of these, see the [Architecture](doc/Architecture.md) document.
 
 #### Other
 
+*   Tape Configuration.
+*   Configurations can have id's (for access), titles (for display).
 *   Convert other configurations to use Immutable.js data structures.
 *   Add some unit tests.
