@@ -2,13 +2,6 @@ import { State, SetStateType } from "../state";
 
 import { BaseCommand } from "./BaseCommand";
 import { Semantics, Action, LoadFunction, NextFunction, RecvFunction } from "../semantics"
-import { Configuration } from "../configurations/Configuration";
-
-
-/* STUB */
-function getAvailableInput(): string | null {
-  return "g";
-}
 
 
 class ControlCommand extends BaseCommand {
@@ -168,7 +161,7 @@ export class StopCommand extends ControlCommand {
     }
   }
 
-  effect(state: State, setState: SetStateType): void {
+  effect(state: State, _setState: SetStateType): void {
     if (state.intervalId) {
       clearTimeout(state.intervalId);
     }

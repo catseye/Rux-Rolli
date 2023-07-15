@@ -11,7 +11,7 @@ interface CommandButtonProps {
 }
 
 export function makeClickHandler(command: BaseCommand, state: State, setState: SetStateType) {
-  return function(e: React.MouseEvent) {
+  return function(_event: React.MouseEvent) {
     command.enact.bind(command)(state, setState);
   };
 }

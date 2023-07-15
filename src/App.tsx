@@ -47,7 +47,7 @@ function SemanticsContainer(props: SemanticsContainerProps) {
   );
 }
 
-function App(props: any) {
+function App(_props: any) {
   return (
     <div>
       <h1>Thencemuffin</h1>

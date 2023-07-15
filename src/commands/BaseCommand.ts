@@ -22,7 +22,7 @@ export class BaseCommand {
    * When the system is in a certain state, certain commands may not be
    * possible to enact.  This method supports describing that case.
    */
-  isPossible(state: State): boolean {
+  isPossible(_state: State): boolean {
     return false;
   }
 
@@ -30,7 +30,7 @@ export class BaseCommand {
    * Occasionally, even when a command is possible, it will not be available
    * to the user.  This method supports describing that case.
    */
-  isAvailableToUser(state: State): boolean {
+  isAvailableToUser(_state: State): boolean {
     return true;
   }
 
@@ -43,6 +43,6 @@ export class BaseCommand {
    * so the `state` that is received as a parameter here, is the
    * latest state, and includes any changes made by `transformer`.
    */
-  effect(state: State, setState: SetStateType): void {
+  effect(_state: State, _setState: SetStateType): void {
   }
 }
