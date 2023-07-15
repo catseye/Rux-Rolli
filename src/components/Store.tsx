@@ -9,6 +9,7 @@ const defaultState: State = {
   status: 'Stopped',
   initial: "",
   configuration: newStack([]),
+  inputBuffer: "",
   intervalId: null,
   issuedCommands: []
 };
@@ -22,6 +23,7 @@ export function initializeStore(programText: string, configuration: Configuratio
       status: 'Stopped',
       initial: programText,
       configuration: configuration,
+      inputBuffer: "",
       intervalId: null,
       issuedCommands: []
     };

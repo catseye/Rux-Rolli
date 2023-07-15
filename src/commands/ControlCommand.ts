@@ -83,17 +83,22 @@ export class StepCommand extends ControlCommand {
         configuration: action.configuration
       }
     } else if (action.type === 'input') {
-      let char: string | null = getAvailableInput();
-      if (char === null) {
+      if (state.inputBuffer === '') {
         return {
           ...state,
           status: 'WaitingForInput',
         }
-      } else {
+      } else
+      {
+        const char = state.inputBuffer.charAt(0);
         const recv: RecvFunction = this.recv.bind(this);
-        const action = recv(state.configuration, char);
+        const newAction = recv(action.configuration, char);
+        const newState = {
+          ...state,
+          inputBuffer: state.inputBuffer.substring(1)
+        }
         // TODO: make this a loop instead of recursion
-        return this.handleAction(state, action);
+        return this.handleAction(newState, newAction);
       }
     } else { // action.type === 'halt'
       return {

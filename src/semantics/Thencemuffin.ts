@@ -4,7 +4,7 @@ import { newRange } from "../configurations/Range";
 import { newStack, push, pop } from "../configurations/Stack";
 import { newPlayfield, setCursor, put, moveCursor } from "../configurations/Playfield";
 import { newCursor } from "../configurations/Cursor";
-import { Semantics, nextWith, haltWith } from "../semantics";
+import { Semantics, nextWith, haltWith, inputWith } from "../semantics";
 
 /*
  * Thencemuffin: a just plain inexcusable esolang
@@ -26,15 +26,17 @@ export const Thencemuffin: Semantics = {
     const stack = getStackChild(configuration, 2);
     if (!text || !pf || !stack) return haltWith(configuration);
 
+    let range = getRanges(text)[0];
+    if (range.index >= getString(text).length) return haltWith(configuration);
+    let char = getString(text).charAt(range.index);
     let newText = moveRange(text, 0, 1);
-    let range = getRanges(newText)[0];
-    if (range.index >= getString(newText).length) return haltWith(configuration);
-    let char = getString(newText).charAt(range.index);
 
     let newStack;
     if (char === 'S') {
       const tmp = pop(stack);
       newStack = tmp !== null ? tmp : stack;
+    } else if (char === 'I') {
+      return inputWith(newComposite([newText, pf, push(stack, "*")]));
     } else {
       newStack = push(stack, "A");
     }
@@ -45,6 +47,13 @@ export const Thencemuffin: Semantics = {
     return nextWith(newComposite([newText, newPf, newStack]));
   },
   recv: function(configuration: Configuration, _input: string) {
-    return nextWith(configuration);
+    const text = getTextChild(configuration, 0);
+    const pf = getPlayfieldChild(configuration, 1);
+    const stack = getStackChild(configuration, 2);
+    if (!text || !pf || !stack) return haltWith(configuration);
+
+    let newStack = push(stack, _input);
+
+    return nextWith(newComposite([text, pf, newStack]));
   }
 }

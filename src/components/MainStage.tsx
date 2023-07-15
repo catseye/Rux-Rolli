@@ -22,6 +22,14 @@ export function MainStage(props: MainStageProps) {
       initial: ev.target.value
     }));
   };
+
+  const onInputChange = function(ev: ChangeEvent<HTMLInputElement>) {
+    setState((state: State) => ({
+      ...state,
+      inputBuffer: ev.target.value
+    }));
+  };
+
   return (
     <div>
       <div>
@@ -31,14 +39,30 @@ export function MainStage(props: MainStageProps) {
         <CommandButton command={props.commands.run} label="Run" />
         <CommandButton command={props.commands.stop} label="Stop" />
         <CommandButton command={props.commands.reset} label="Reset" />
+        <StatusIndicator status={state.status} />
+        <InputArea value={state.inputBuffer} onChange={onInputChange} />
       </div>
       <div>
         {state.status === 'Editing' ?
           <Editor onChange={onEditorChange} programText={ state.initial } /> :
           <ConfigurationView configuration={ state.configuration } />
         }
-        <p>{ state.status }</p>
       </div>
     </div>
+  );
+}
+
+export function StatusIndicator(props: any) {
+  return <span style={{margin: "1em", color: "yellowgreen"}}>{ props.status }</span>
+}
+
+function InputArea(props: any) {
+  return (
+    <label>
+      <input
+        value={props.value}
+        onChange={props.onChange}
+      />
+    </label>
   );
 }
