@@ -48,5 +48,3 @@ export const Thencemuffin: Semantics = {
     return ['next', configuration];
   }
 }
-  
-  

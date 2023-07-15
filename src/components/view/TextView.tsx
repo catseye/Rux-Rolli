@@ -1,4 +1,5 @@
-import { Text, mapText, Range } from "../../configurations/Text";
+import { Text, mapText } from "../../configurations/Text";
+import { Range } from "../../configurations/Range";
 
 interface TextViewProps {
   text: Text;
