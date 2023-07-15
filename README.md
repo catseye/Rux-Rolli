@@ -72,14 +72,16 @@ of these, see the [Architecture](doc/Architecture.md) document.
 #### Configurations
 
 *   Configurations can have id's (for access), titles (for display).
-*   Cursors on Playfield (or CursoredPlayfield subclass or wrapper).
+*   Extent on Playfield should include cursors.
+*   Extent on Playfield should be pinnable by view.
 *   Extent tracking on Playfield.
-*   Scrollable view of Playfield, with cursors.
+*   Scrollable view of Playfield.
 
 #### Language
 
 *   Implement a realer example esolang than what we have so far.
 *   Select preset examples to load from dropdown.
+*   Some way to take the language definition from plain JavaScript injected from elsewhere.
 
 #### Other
 

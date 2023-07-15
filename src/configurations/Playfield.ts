@@ -1,6 +1,6 @@
 import { Map, List } from "immutable";
 
-import { Cursor } from "./Cursor"
+import { Cursor, moveBy } from "./Cursor"
 
 export interface Playfield {
   type: 'playfield';
@@ -98,7 +98,28 @@ export function mapPlayfieldCells(p: Playfield, y: number, f: (x: number, conten
   var contents;
   for (var x = minX; x <= maxX; x++) {
     contents = get(p, x, y);
-    results.push(f(x, contents, []))
+
+    let cursorsHere: Array<Cursor> = [];
+    p.cursors.forEach((cursor, _name, _iter) => {
+      if (cursor.x === x && cursor.y === y) {
+        cursorsHere.push(cursor);
+      }
+    });
+
+    results.push(f(x, contents, cursorsHere));
   }
   return results;
+}
+
+export function moveCursor(p: Playfield, name: string, dx: number, dy: number): Playfield {
+  let cursor = p.cursors.get(name);
+  if (!cursor) {
+    console.log("ERROR: no cursor on this playfield named '" + name + "'!");
+    return p;
+  }
+  cursor = moveBy(cursor, dx, dy);
+  return {
+    ...p,
+    cursors: p.cursors.set(name, cursor),
+  }
 }
