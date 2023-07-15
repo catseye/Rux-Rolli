@@ -130,6 +130,14 @@ export class RunCommand extends ControlCommand {
   name = "run";
 
   isPossible(state: State): boolean {
+    return state.status === 'Stopped' || state.status === 'WaitingForInput';
+  }
+
+  isAvailableToUser(state: State): boolean {
+    /*
+     * Even though it is possible to `run` in the 'WaitingForInput' state, the
+     * `run` command is not available to the user in that state.
+     */
     return state.status === 'Stopped';
   }
 
@@ -172,7 +180,7 @@ export class ResetCommand extends ControlCommand {
   name = "reset";
 
   isPossible(state: State): boolean {
-    return state.status === 'Stopped' || state.status === 'Terminated';
+    return state.status === 'Stopped' || state.status === 'Terminated' || state.status === 'WaitingForInput';
   }
 
   transformer(state: State): State {

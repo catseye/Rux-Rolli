@@ -17,7 +17,7 @@ interface SemanticsContainerProps {
 
 function SemanticsContainer(props: SemanticsContainerProps) {
   const commands = createCommandsFromSemantics(props.semantics);
-  const programText = 'THUSNESS';
+  const programText = 'THUSINESS';
   const [state, setState] = initializeStore(programText, props.semantics.load(programText));
 
   React.useEffect(() => {

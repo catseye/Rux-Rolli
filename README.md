@@ -64,11 +64,6 @@ of these, see the [Architecture](doc/Architecture.md) document.
 
 ### TODO
 
-#### Input
-
-*   Work out how waiting for input will work.
-*   Input control that provides input.
-
 #### Playfields
 
 *   Load multi-line string into Playfield.
@@ -85,6 +80,9 @@ of these, see the [Architecture](doc/Architecture.md) document.
 
 #### Other
 
+*   Deal with pausing for input when it wasn't previously running
+*   Document better how Commands work and what it means to `enact` them
+    (highlighting the places where this is done in the codebase.)
 *   Tape Configuration.
 *   Configurations can have id's (for access), titles (for display).
 *   Convert other configurations to use Immutable.js data structures.

@@ -1,26 +1,29 @@
 initial,
 editing,
-^empty?: input buffer empty?,
+active {
+  stopped, running;
+},
+^empty?:input empty?,
 "awaiting input";
 
-running => running : step:update;
-running => terminated : step:halt;
-running => ^empty? : step:input;
+active => terminated : step:halt;
+active => ^empty? : step:input;
+// active => active : step:update;
 
 ^empty? => "awaiting input": [yes];
 ^empty? => running: [no];
 
-initial => paused;
+initial => stopped;
 
-paused => editing : edit;
-editing => paused : done;
+stopped => editing : edit;
+editing => stopped : done;
 
-paused => running : run;
-running => paused : stop;
-paused => paused : reset;
+stopped => running : run;
+running => stopped: stop;
+stopped => stopped: reset;
 
 terminated => editing : edit;
-terminated => paused : reset;
+terminated => stopped : reset;
 
 "awaiting input" => running : input;
-"awaiting input" => paused : reset;
+"awaiting input" => stopped : reset;

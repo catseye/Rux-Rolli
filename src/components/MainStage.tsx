@@ -24,10 +24,16 @@ export function MainStage(props: MainStageProps) {
   };
 
   const onInputChange = function(ev: ChangeEvent<HTMLInputElement>) {
-    setState((state: State) => ({
-      ...state,
-      inputBuffer: ev.target.value
-    }));
+    setState((state: State) => {
+        if (state.status === 'WaitingForInput') {
+          // FIXME: what if it wasn't previously running?
+          props.commands.run.enact(state, setState);
+        }
+        return {
+        ...state,
+        inputBuffer: ev.target.value
+      }
+    });
   };
 
   return (
@@ -53,7 +59,17 @@ export function MainStage(props: MainStageProps) {
 }
 
 export function StatusIndicator(props: any) {
-  return <span style={{margin: "1em", color: "yellowgreen"}}>{ props.status }</span>
+  let statusText = props.status;
+  if (statusText === "WaitingForInput") { statusText = "Waiting for Input"; }
+  let statusColor = "orange";
+  if (props.status === 'Stopped') {
+    statusColor = "grey";
+  } else if (props.status === 'Running') {
+    statusColor = "green";
+  } else if (props.status === 'Terminated') {
+    statusColor = "red";
+  }
+  return <span style={{margin: "1em", color: statusColor, minWidth: "10em", display: "inline-block"}}>{ statusText }</span>
 }
 
 function InputArea(props: any) {
