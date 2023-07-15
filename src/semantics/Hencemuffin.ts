@@ -1,6 +1,7 @@
 import { Semantics } from "../semantics";
 import { Configuration } from "../configurations/Configuration";
 import { newText, getString, getRanges } from "../configurations/Text";
+import { nextWith, haltWith } from "../semantics";
 
 /*
  * Hencemuffin: an inexcusably trivial esolang
@@ -10,10 +11,10 @@ export const Hencemuffin: Semantics = {
     return newText(programText, []);
   },
   next: function(configuration: Configuration) {
-    if (configuration.type !== "text") return ['halt', configuration];
-    return ['next', newText(getString(configuration) + "A", getRanges(configuration))];
+    if (configuration.type !== "text") return haltWith(configuration);
+    return nextWith(newText(getString(configuration) + "A", getRanges(configuration)));
   },
   recv: function(configuration: Configuration, _input: string) {
-    return ['next', configuration];
+    return nextWith(configuration);
   }
 }

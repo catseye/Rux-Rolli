@@ -72,17 +72,17 @@ export class StepCommand extends ControlCommand {
 
   transformer(state: State): State {
     const next: NextFunction = this.next.bind(this);
-    const [action, configuration] = next(state.configuration);
-    return this.handleAction(state, action, configuration);
+    const action = next(state.configuration);
+    return this.handleAction(state, action);
   }
 
-  handleAction(state: State, action: Action, configuration: Configuration): State {
-    if (action === 'next') {
+  handleAction(state: State, action: Action): State {
+    if (action.type === 'next') {
       return {
         ...state,
-        configuration: configuration
+        configuration: action.configuration
       }
-    } else if (action === 'input') {
+    } else if (action.type === 'input') {
       let char: string | null = getAvailableInput();
       if (char === null) {
         return {
@@ -91,10 +91,11 @@ export class StepCommand extends ControlCommand {
         }
       } else {
         const recv: RecvFunction = this.recv.bind(this);
-        const [action, configuration] = recv(state.configuration, char);
-        return this.handleAction(state, action, configuration);
+        const action = recv(state.configuration, char);
+        // TODO: make this a loop instead of recursion
+        return this.handleAction(state, action);
       }
-    } else { // action === 'halt'
+    } else { // action.type === 'halt'
       return {
         ...state,
         status: 'Terminated',

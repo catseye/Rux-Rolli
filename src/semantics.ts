@@ -6,11 +6,38 @@ import { Configuration } from "./configurations/Configuration";
  */
 export type LoadFunction = (programText: string) => Configuration;
 
-export type Action = 'next' | 'halt' | 'input';
+export interface NextAction {
+  type: 'next';
+  configuration: Configuration;
+}
 
-export type NextFunction = (configuration: Configuration) => [Action, Configuration];
+export function nextWith(c: Configuration): NextAction {
+  return {type: 'next', configuration: c};
+}
 
-export type RecvFunction = (configuration: Configuration, input: string) => [Action, Configuration];
+export interface HaltAction {
+  type: 'halt';
+  configuration: Configuration;
+}
+
+export function haltWith(c: Configuration): HaltAction {
+  return {type: 'halt', configuration: c};
+}
+
+export interface InputAction {
+  type: 'input';
+  configuration: Configuration;
+}
+
+export function inputWith(c: Configuration): InputAction {
+  return {type: 'input', configuration: c};
+}
+
+export type Action = NextAction | HaltAction | InputAction;
+
+export type NextFunction = (configuration: Configuration) => Action;
+
+export type RecvFunction = (configuration: Configuration, input: string) => Action;
 
 export interface Semantics {
     load: LoadFunction;
