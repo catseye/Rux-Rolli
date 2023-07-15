@@ -1,5 +1,6 @@
 import { Configuration, newComposite, getTextChild, getPlayfieldChild, getStackChild } from "../configurations/Configuration";
-import { newText, newRange, getString, getCursors, moveCursor as moveRange } from "../configurations/Text";
+import { newText, getString, getRanges, moveRange } from "../configurations/Text";
+import { newRange } from "../configurations/Range";
 import { newStack, push, pop } from "../configurations/Stack";
 import { newPlayfield, setCursor, put, moveCursor } from "../configurations/Playfield";
 import { newCursor } from "../configurations/Cursor";
@@ -23,12 +24,12 @@ export const Thencemuffin: Semantics = {
     const text = getTextChild(configuration, 0);
     const pf = getPlayfieldChild(configuration, 1);
     const stack = getStackChild(configuration, 2);
-    if (!text || !pf || !stack) return ['halt', configuration];
+    if (!text || !pf || !stack) return ['halt', configuration]; // actually, error
 
     let newText = moveRange(text, 0, 1);
-    let cursor = getCursors(newText)[0];
-    if (cursor.index >= getString(newText).length) return ['halt', configuration];
-    let char = getString(newText).charAt(cursor.index);
+    let range = getRanges(newText)[0];
+    if (range.index >= getString(newText).length) return ['halt', configuration];
+    let char = getString(newText).charAt(range.index);
 
     let newStack;
     if (char === 'S') {
