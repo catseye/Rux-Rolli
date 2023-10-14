@@ -15,7 +15,7 @@ The framework is written in TypeScript and the build system uses
 
 To try the production build, run `npm run build`.  Then start a
 local web server in the `dist` directory, e.g.
-`cd src && python3 -m http.server` and go to `http://localhost:8000/`
+`cd dist && python3 -m http.server` and go to `http://localhost:8000/`
 in your favourite web browser.
 
 ### Background
@@ -80,6 +80,7 @@ of these, see the [Architecture](doc/Architecture.md) document.
 
 #### Other
 
+*   Focus InputArea when going into WaitingForInput
 *   Deal with pausing for input when it wasn't previously running
 *   Document better how Commands work and what it means to `enact` them
     (highlighting the places where this is done in the codebase.)

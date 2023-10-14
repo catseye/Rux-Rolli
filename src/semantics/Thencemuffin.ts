@@ -21,6 +21,9 @@ export const Thencemuffin: Semantics = {
     ]);
   },
   next: function(configuration: Configuration) {
+    if (configuration.type !== "composite") {
+      return haltWith(configuration);
+    }
     const text = getTextChild(configuration, 0);
     const pf = getPlayfieldChild(configuration, 1);
     const stack = getStackChild(configuration, 2);
@@ -47,6 +50,9 @@ export const Thencemuffin: Semantics = {
     return nextWith(newComposite([newText, newPf, newStack]));
   },
   recv: function(configuration: Configuration, _input: string) {
+    if (configuration.type !== "composite") {
+      return haltWith(configuration);
+    }
     const text = getTextChild(configuration, 0);
     const pf = getPlayfieldChild(configuration, 1);
     const stack = getStackChild(configuration, 2);

@@ -22,20 +22,17 @@ export function getChildren(c: Composite): Array<Configuration> {
   return c.contents;
 }
 
-export function getTextChild(c: Configuration, index: number): Text | null {
-  if (c.type !== 'composite') return null;
+export function getTextChild(c: Composite, index: number): Text | null {
   const child = c.contents[index];
   return (child.type === 'text') ? child : null;
 }
 
-export function getPlayfieldChild(c: Configuration, index: number): Playfield | null {
-  if (c.type !== 'composite') return null;
+export function getPlayfieldChild(c: Composite, index: number): Playfield | null {
   const child = c.contents[index];
   return (child.type === 'playfield') ? child : null;
 }
 
-export function getStackChild(c: Configuration, index: number): Stack | null {
-  if (c.type !== 'composite') return null;
+export function getStackChild(c: Composite, index: number): Stack | null {
   const child = c.contents[index];
   return (child.type === 'stack') ? child : null;
 }
