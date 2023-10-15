@@ -7,6 +7,26 @@ import { newCursor } from "../configurations/Cursor";
 import { Semantics, nextWith, haltWith, inputWith } from "../semantics";
 
 /*
+
+So we'll need something like this that exposes all the Configuration APIs
+to the Lua VM:
+
+export function setUpPrint(elem: any): void {
+  elem.innerHTML = '';
+  fengari.interop.push(fengari.L, function() {
+    var s = fengari.interop.tojs(fengari.L, 2);
+    elem.innerHTML += s + "\n";
+  });
+  fengari.lua.lua_setglobal(fengari.L, "veloPrint");
+}
+
+We'll also need to load the Lua versions of the three functions below.
+
+Finally we'll need the Semantics to be calls to those Lua functions.
+
+*/
+
+/*
  * Thencemuffin: a just plain inexcusable esolang
  */
 export const Thencemuffin: Semantics = {
